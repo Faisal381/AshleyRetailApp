@@ -1,0 +1,29 @@
+<resources>
+
+    <string name="arabic">لغة العربية</string>
+    <string name="english">English</string>
+    <string name="app_name">Al Rugaib Furniture</string>
+
+
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="submit">Submit</string>
+    <string name="full_name">Full Name</string>
+    <string name="hint_email_address">Email Address</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="saved_addresses">Saved Addresses</string>
+
+
+
+    <string name="confirmation">Confirmation</string>
+    <string name="information_incomplete">Following information are incomplete</string>
+    <string name="sure_to_submit">"Are you sure you want submit order to: "</string>
+    <string name="choose_address">Choose an address</string>
+    <string name="fill">"Fill"</string>
+    <string name="correct">"Correct"</string>
+    <string name="do_following_actions">Please do following actions:\n</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="input_phone">Please input phone number</string>
+    <string name="phone_to_short">Phone number is to short</string>
+
+</resources>

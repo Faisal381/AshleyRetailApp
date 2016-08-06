@@ -1,0 +1,22 @@
+<resources>
+    <string name="hint_phone_number">رقم الهاتف</string>
+    <string name="submit">عرض</string>
+    <string name="full_name">الاسم الكامل</string>
+    <string name="hint_email_address">عنوان الاكتروني</string>
+    <string name="delivery_address">عنوان التوصيل</string>
+    <string name="saved_addresses"> عناوين محفوظة</string>
+
+
+
+    <string name="confirmation">تأكيد</string>
+    <string name="information_incomplete">Following information are incomplete</string>
+    <string name="sure_to_submit">Are you sure you want submit order to: </string>
+    <string name="choose_address">Choose an address</string>
+    <string name="fill">"شغل"</string>
+    <string name="correct">"صحيح"</string>
+    <string name="do_following_actions">Please do following actions:\n</string>
+    <string name="cancel">إلغاء</string>
+    <string name="confirm">أكد</string>
+    <string name="input_phone">Please input phone number</string>
+    <string name="phone_to_short">Phone number is to short</string>
+</resources>

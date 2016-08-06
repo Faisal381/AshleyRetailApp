@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="@android:style/Theme.Material.Light.NoActionBar.Fullscreen">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorControlNormal">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
+        <item name="android:colorControlHighlight">@color/colorAccent</item>
+        <item name="android:colorControlActivated">@color/colorAccent</item>
+    </style>
+
+
+    <style name="FloatingTextStyle" parent="@style/Theme.AppCompat">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorControlNormal">@color/colorPrimary</item>
+        <item name="android:colorControlHighlight">@color/colorAccent</item>
+        <item name="android:colorControlActivated">@color/colorAccent</item>
+    </style>
+</resources>
