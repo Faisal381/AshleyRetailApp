@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Al Rugaib Delivery</string>
+    <string name="invoice_number">Invoice Number</string>
+    <string name="google_map_key">AIzaSyBoTBqEFV0f7933lZfPw_gN6RisWsZ2A7k</string>
+</resources>
