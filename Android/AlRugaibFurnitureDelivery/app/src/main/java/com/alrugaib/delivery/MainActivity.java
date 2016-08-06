@@ -12,15 +12,24 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alrugaib.delivery.communication.ApiHelper;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+import com.squareup.okhttp.ResponseBody;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +37,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
+
 public class MainActivity extends AppCompatActivity implements OrderAdapter.AdapterCallback {
+
+
     private static final String TAG = MainActivity.class.getCanonicalName();
     private static final int PERMISSION_ACCESS_COARSE_LOCATION = 2345;
     private ArrayList<OrderModel> pointsPath = new ArrayList<>();
@@ -42,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
     private EditText invoiceInput;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private TextView routeDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
         setContentView(R.layout.activity_main);
 
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-
+        routeDetails = (TextView) findViewById(R.id.route_details);
         initList();
         initClickListeners();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -59,10 +75,6 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
         } else {
             getCurrentUserLocation();
         }
-//mock data
-        //    currentUserLocation.setLatitude(26.192662);
-        //   currentUserLocation.setLongitude(50.198229);
-        pointsPath.add(new OrderModel(6, new LatLng(26.157573, 50.185384)));
 
         pointsPath.add(new OrderModel(2, new LatLng(26.177473, 50.151384)));
         pointsPath.add(new OrderModel(3, new LatLng(26.19273, 50.155384)));
@@ -83,8 +95,10 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
                 if (adapter.getCount() <= 1 || adapter.isSorted()) {
                     return;
                 }
+
+                routeDetails.setVisibility(View.GONE);
                 if (currentUserLocation == null) {
-                    Toast.makeText(MainActivity.this, "Please wait untill we find Your location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Please wait until we find Your location", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -97,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
         findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                routeDetails.setVisibility(View.GONE);
                 String inputText = invoiceInput.getText().toString();
                 if (inputText.length() == 0) {
                     return;
@@ -116,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
         findViewById(R.id.clear_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                routeDetails.setVisibility(View.GONE);
                 adapter.updateDataset(new ArrayList<OrderModel>());
             }
         });
@@ -137,6 +154,12 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url));
         intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemRemoved(int position) {
+
+        routeDetails.setVisibility(View.GONE);
     }
 
     public <T> Collection<List<T>> generatePermutationsNoRepetition(Set<T> availableNumbers) {
@@ -197,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
             newDataset.add(dataset.get(point));
         }
         adapter.updateDataset(newDataset);
+        getDistanceFromPath(newDataset);
         Log.i("time", System.currentTimeMillis() - startTime + " " + currentShortestDistance / 1000);
 
     }
@@ -214,17 +238,74 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
         super.onPause();
     }
 
-    private void getDistanceFromPath() {
+
+    private void getDistanceFromPath(List<OrderModel> orderModels) {
         // String url = "http://maps.googleapis.com/maps?f=d&daddr=" + destinationLatitude + "," + destinationLongitude + "&dirflg=d&layer=t";
         StringBuilder url = new StringBuilder();
         url.append("https://maps.googleapis.com/maps/api/directions/json?");
         url.append("origin=" + currentUserLocation.getLatitude() + "," + currentUserLocation.getLongitude());
-        url.append("&destination=" + currentUserLocation.getLatitude() + "," + currentUserLocation.getLongitude());
-        url.append("&waypoints=optimize:true");
-        for (int i = 0; i < adapter.getDataset().size() - 1; i++) {
-            url.append("|" + adapter.getDataset().get(i).getLocation().latitude + "," + adapter.getDataset().get(i).getLocation().longitude);
+        url.append("&destination=" + orderModels.get(orderModels.size() - 1).getLocation().latitude + "," + orderModels.get(orderModels.size() - 1).getLocation().longitude);
+        url.append("&waypoints=");//optimize:true
+        for (int i = 0; i < orderModels.size() - 1; i++) {
+            url.append("|" + orderModels.get(i).getLocation().latitude + "," + orderModels.get(i).getLocation().longitude);
         }
+        url.append("&sensor=false&units=metric&mode=driving");  //&key="+getString(R.string.google_map_key));
+        Log.e("getDistnanceFromPath " + orderModels.size(), url.toString());
+        ApiHelper.getInstance().getDirections(url.toString(), new Callback<ResponseBody>() {
 
+            @Override
+            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+                try {
+                    JSONObject responseObject = (JSONObject) new JSONTokener(response.body().string()).nextValue();
+                    //this.responseString = responseObject.getString("status") ;
+                    JSONArray routesArray = responseObject.getJSONArray("routes");
+                    JSONObject route = routesArray.getJSONObject(0);
+                    JSONArray legs;
+                    JSONObject dist;
+                    Integer distance = 0;
+                    Integer time = 0;
+                    if (route.has("legs")) {
+                        legs = route.getJSONArray("legs");
+
+                        int nlegs = legs.length();
+                        for (int i = 0; i < nlegs; i++) {
+                            JSONObject leg = legs.getJSONObject(i);
+                            if (leg.has("distance")) {
+                                dist = (JSONObject) leg.get("distance");// throws exception
+                                distance += dist.getInt("value");
+                            }
+                            if (leg.has("duration")) {
+                                dist = (JSONObject) leg.get("duration");// throws exception
+                                time += dist.getInt("value");
+                            }
+                        }
+                    }
+                    if (distance > 0 && time > 0) {
+                        showTimeAndDistance(distance, time);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("onFailure", "");
+            }
+        });
+
+
+    }
+
+    private void showTimeAndDistance(final Integer distance, final Integer time) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                routeDetails.setVisibility(View.VISIBLE);
+                routeDetails.setText("Calculated Distance: " + (distance > 1000 ? distance / 1000 + " km " : distance + " km ")
+                        + " Duration " + (time > 60 ? (time > 3600 ? time / 3600 + " h " : time / 60 + " min ") : time + " sec "));
+            }
+        });
     }
 
     private void calculatePathDistance(List<Integer> path) {
@@ -298,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getCurrentUserLocation();
                 } else {
-                    Toast.makeText(this, "Need your location!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "We need your location!", Toast.LENGTH_SHORT).show();
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                             != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},

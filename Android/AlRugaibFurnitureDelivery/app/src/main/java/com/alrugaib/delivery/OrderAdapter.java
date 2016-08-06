@@ -37,7 +37,7 @@ public class OrderAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public List<OrderModel> getDataset(){
+    public List<OrderModel> getDataset() {
         return dataset;
     }
 
@@ -78,6 +78,7 @@ public class OrderAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 dataset.remove(position);
+                callback.onItemRemoved(position);
                 notifyDataSetChanged();
             }
         });
@@ -86,5 +87,7 @@ public class OrderAdapter extends BaseAdapter {
 
     public interface AdapterCallback {
         void onNavigateClicked(OrderModel model);
+
+        void onItemRemoved(int position);
     }
 }
