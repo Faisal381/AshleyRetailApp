@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@android:color/white"
-              android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="horizontal">
 
-    <LinearLayout android:layout_width="0dp"
-                  android:layout_height="match_parent"
-                  android:layout_margin="8dp"
-                  android:layout_weight="1"
-                  android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
             android:adjustViewBounds="true"
-            android:src="@drawable/logo"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/full_name"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/colorAccent" />
 
         <EditText
             android:id="@+id/input_name"
@@ -32,14 +34,14 @@
             android:inputType="textPersonName"
             android:singleLine="true"
             android:textColor="@color/colorPrimary"
-            android:textColorHint="@android:color/darker_gray"/>
+            android:textColorHint="@android:color/darker_gray" />
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/hint_email_address"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/colorAccent" />
 
         <EditText
             android:id="@+id/input_email"
@@ -50,13 +52,13 @@
             android:inputType="textEmailAddress"
             android:singleLine="true"
             android:textColor="@color/colorPrimary"
-            android:textColorHint="@android:color/darker_gray"/>
+            android:textColorHint="@android:color/darker_gray" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/hint_phone_number"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/colorAccent" />
 
         <EditText
             android:id="@+id/input_mobile"
@@ -69,38 +71,39 @@
             android:maxEms="10"
             android:singleLine="true"
             android:textColor="@color/colorPrimary"
-            android:textColorHint="@android:color/darker_gray"/>
+            android:textColorHint="@android:color/darker_gray" />
 
-        <LinearLayout android:layout_width="match_parent"
-                      android:orientation="horizontal"
-                      android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/delivery_address"
-                android:layout_weight="1"
                 android:layout_gravity="bottom"
-                android:textColor="@color/colorAccent"/>
+                android:layout_weight="1"
+                android:text="@string/delivery_address"
+                android:textColor="@color/colorAccent" />
+
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/submit_button"
 
-                android:theme="@style/FloatingTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:clickable="true"
-                android:src="@drawable/ic_done_white_24dp" />
+                android:src="@drawable/ic_done_white_24dp"
+                android:theme="@style/FloatingTextStyle" />
         </LinearLayout>
 
 
-
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/map_choosen"
-                android:layout_margin="8dp"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"/>
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map_choosen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp" />
 
     </LinearLayout>
 
@@ -116,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/saved_addresses"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/colorAccent" />
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_first"
@@ -124,19 +127,21 @@
             android:layout_height="0dp"
             android:layout_margin="8dp"
 
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_second"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="8dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_third"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="8dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
     </LinearLayout>
 
 

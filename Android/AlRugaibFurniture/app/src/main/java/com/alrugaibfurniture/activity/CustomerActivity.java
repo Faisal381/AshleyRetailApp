@@ -209,7 +209,7 @@ public class CustomerActivity extends Activity {
     void onSubmitClicked() {
         String validMsg = validInput();
 
-        Log.e("onSubmitClicked", validMsg+ " ");
+        Log.d("onSubmitClicked", validMsg+ " ");
         if (validMsg == null) {
             StringBuilder builder = new StringBuilder();
             builder.append(getString(R.string.sure_to_submit));
