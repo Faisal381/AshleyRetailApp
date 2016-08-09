@@ -42,13 +42,6 @@ namespace FurnitureDelivery.Models
         /// </summary>
         public String FullName { get; set; }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public int? ContactAddressId { get; set; }
-
         /// <summary>
         /// List of delivery addresses
         /// </summary>

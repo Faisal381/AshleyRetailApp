@@ -6,7 +6,7 @@
 @model Collection<ApiDescription>
 
 @{
-    ViewBag.Title = "ASP.NET Web API Help Page";
+    ViewBag.Title = "Ashley Retail App - Web API Help Page";
 
     // Group APIs by controller
     ILookup<HttpControllerDescriptor, ApiDescription> apiGroups = Model.ToLookup(api => api.ActionDescriptor.ControllerDescriptor);
@@ -25,7 +25,8 @@
         <div class="content-wrapper">
             <h2>Introduction</h2>
             <p>
-                Provide a general description of your APIs here.
+                API Help Page for Ashley Retail App. Here you can see CustomerProfiles api to get/update use'r profile,
+                DeliveryLogs to handle and save delivery logs, Order to get existing or save new order. 
             </p>
         </div>
     </section>

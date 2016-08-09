@@ -42,7 +42,6 @@ namespace FurnitureDelivery.Models
         /// Delivery address
         /// </summary>
         [ForeignKey("DeliveryAddressId")]
-        [ApiExplorerSettings(IgnoreApi = true)]
         public virtual CustomerAddress DeliveryAddress{ get; set; }
 
         /// <summary>

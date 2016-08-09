@@ -79,28 +79,11 @@ namespace FurnitureDelivery.Controllers
                 return BadRequest(ModelState);
             }
 
-            var profile = db.CustomerProfiles.Include(p => p.DeliveryAddresses).Where(x=>x.PhoneNumber == phone).FirstOrDefault();
+            await updateCustomerProfile(phone, customerProfile);
 
-            if(profile == null)//if no profile then create
-            {
-                customerProfile.PhoneNumber.Replace(" ", "");//ignore spaces
-                db.CustomerProfiles.Add(customerProfile);
-            }
-            else //update object
-            {
-                customerProfile.Id = profile.Id;
-                db.Entry(profile).CurrentValues.SetValues(customerProfile);
-                //db.Entry(profile.DeliveryAddresses).CurrentValues.SetValues(customerProfile.DeliveryAddresses);
-                //customerProfile.DeliveryAddresses.ToList().ForEach(p => db.Entry(p).State = EntityState.Modified);
-                //remove old delivery addreses
-                //var deliveryAddresses = db.CustomerAddresses.Where(x => x.CustomerProfileId == customerProfile.Id);
-                //db.CustomerAddresses.RemoveRange(deliveryAddresses);
-                await UpdateAddresses(customerProfile.Id, customerProfile.DeliveryAddresses);
-
-                Validate(customerProfile);
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-            }
+            Validate(customerProfile);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             await db.SaveChangesAsync();
 
@@ -110,6 +93,31 @@ namespace FurnitureDelivery.Controllers
         }
 
 
+        [NonAction]
+        public async Task updateCustomerProfile(String phone, CustomerProfile customerProfile)
+        {
+            phone.Replace(" ", "");//ignore spaces
+            var profile = db.CustomerProfiles.Include(p => p.DeliveryAddresses).Where(x => x.PhoneNumber == phone).FirstOrDefault();
+
+            if (profile == null)//if no profile then create
+            {
+                customerProfile.PhoneNumber.Replace(" ", "");//ignore spaces
+                db.CustomerProfiles.Add(customerProfile);
+            }
+            else //update object
+            {
+                customerProfile.Id = profile.Id;
+                customerProfile.PhoneNumber.Replace(" ", "");//ignore spaces
+
+                db.Entry(profile).CurrentValues.SetValues(customerProfile);
+
+                await UpdateAddresses(customerProfile.Id, customerProfile.DeliveryAddresses);
+            }
+
+        }
+
+
+        [NonAction]
         private async Task UpdateAddresses(int profileId, ICollection<CustomerAddress> addresses)
         {
             //delete references to not used addresses anymore
@@ -145,7 +153,6 @@ namespace FurnitureDelivery.Controllers
             await db.SaveChangesAsync();
 
         }
-
 
     }
 }

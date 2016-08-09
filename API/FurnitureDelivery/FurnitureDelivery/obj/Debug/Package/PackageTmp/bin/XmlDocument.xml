@@ -562,15 +562,6 @@
             <param name="order"></param>
             <returns></returns>
         </member>
-        <member name="M:FurnitureDelivery.Controllers.OrdersController.PostOrderWithProfileUpdate(FurnitureDelivery.Models.Order)">
-            <summary>
-            Saves (or updates) order to database depending if invoice number exists in database.
-            Also user's profile in order is updated
-            All fields are requred!
-            </summary>
-            <param name="order"></param>
-            <returns></returns>
-        </member>
         <member name="T:FurnitureDelivery.Models.CustomerAddress">
             <summary>
             Address instance

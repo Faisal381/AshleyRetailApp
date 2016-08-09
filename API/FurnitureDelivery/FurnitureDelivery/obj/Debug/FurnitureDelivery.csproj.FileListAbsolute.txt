@@ -50,3 +50,4 @@ D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Debug
 D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Debug\FurnitureDelivery.pdb
 D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Debug\FurnitureDelivery.csprojResolveAssemblyReference.cache
 D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Debug\FurnitureDelivery.Migrations.Initial5.resources
+D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Debug\FurnitureDelivery.Migrations.Initial6.resources

@@ -33,7 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>App_Data\XmlDocument.xml</DocumentationFile>
+    <DocumentationFile>bin\XmlDocument.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -119,6 +119,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\XmlDocument.xml" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
@@ -181,6 +182,10 @@
     <Compile Include="Migrations\201608081556416_Initial5.Designer.cs">
       <DependentUpon>201608081556416_Initial5.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608090434165_Initial6.cs" />
+    <Compile Include="Migrations\201608090434165_Initial6.Designer.cs">
+      <DependentUpon>201608090434165_Initial6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CustomerAddress.cs" />
     <Compile Include="Models\Order.cs" />
@@ -220,9 +225,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201608081243409_Initial.resx">
       <DependentUpon>201608081243409_Initial.cs</DependentUpon>
@@ -238,6 +241,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608081556416_Initial5.resx">
       <DependentUpon>201608081556416_Initial5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608090434165_Initial6.resx">
+      <DependentUpon>201608090434165_Initial6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
