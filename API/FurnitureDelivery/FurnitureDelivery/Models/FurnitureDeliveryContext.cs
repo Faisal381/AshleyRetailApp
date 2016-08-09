@@ -18,7 +18,7 @@ namespace FurnitureDelivery.Models
     
         public FurnitureDeliveryContext() : base("name=FurnitureDeliveryContext")
         {
-           //this.Configuration.LazyLoadingEnabled = true;
+           this.Configuration.LazyLoadingEnabled = true;
         }
 
         public System.Data.Entity.DbSet<FurnitureDelivery.Models.CustomerProfile> CustomerProfiles { get; set; }

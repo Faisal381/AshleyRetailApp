@@ -35,7 +35,6 @@ namespace FurnitureDelivery.Models
         /// <summary>
         /// 
         /// </summary>
-        [Required]
         public int DeliveryAddressId { get; set; }
         
         /// <summary>
@@ -47,7 +46,6 @@ namespace FurnitureDelivery.Models
         /// <summary>
         /// 
         /// </summary>
-        [Required]
         public int CustomerProfileId { get; set; }
 
         /// <summary>
@@ -57,6 +55,10 @@ namespace FurnitureDelivery.Models
         [ApiExplorerSettings(IgnoreApi = true)]
         public virtual CustomerProfile CustomerProfile { get; set; }
 
-
+        /// <summary>
+        /// Which address is delivery address
+        /// </summary>
+        [NotMapped]
+        public int? DeliveryAddressNumber { get; set; }
     }
 }

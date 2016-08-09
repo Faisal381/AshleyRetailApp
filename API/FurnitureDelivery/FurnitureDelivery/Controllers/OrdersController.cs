@@ -80,6 +80,16 @@ namespace FurnitureDelivery.Controllers
                 return BadRequest(ModelState);
             }
 
+            //updaste user profile
+            CustomerProfilesController profileController = new CustomerProfilesController();
+            await profileController.updateCustomerProfile(order.CustomerProfile.PhoneNumber, order.CustomerProfile);
+            var existingProfile = db.CustomerProfiles.Where(e => e.PhoneNumber == order.CustomerProfile.PhoneNumber)
+                .FirstOrDefault();//reload profile
+
+            order.CustomerProfile = null;
+            order.CustomerProfileId = existingProfile.Id;
+            order.DeliveryAddressId = existingProfile.DeliveryAddresses.ToList()[order.DeliveryAddressNumber.Value].Id;
+
             var existingOrder = db.Orders.Where(e => e.InvoiceNumber == order.InvoiceNumber).FirstOrDefault();
 
             if (existingOrder == null)
@@ -88,22 +98,15 @@ namespace FurnitureDelivery.Controllers
             }
             else
             {
+                order.Id = existingOrder.Id;
                 db.Entry(existingOrder).CurrentValues.SetValues(order);
             }
 
             await db.SaveChangesAsync();
 
-            //updaste user profile
-            CustomerProfilesController profileCOntroller = new CustomerProfilesController();
-            await profileCOntroller.updateCustomerProfile(order.CustomerProfile.PhoneNumber, order.CustomerProfile);
-
-            return CreatedAtRoute("DefaultApi", new { id = order.Id }, order);
-        }
-
-
-        private bool OrderExists(string invoiceNumber)
-        {
-            return db.Orders.Count(e => e.InvoiceNumber == invoiceNumber) > 0;
+            var returnOrder = db.Orders.Where(e => e.InvoiceNumber == order.InvoiceNumber).FirstOrDefault();
+            returnOrder.DeliveryAddress.CustomerProfile = null;
+            return CreatedAtRoute("DefaultApi", new { id = order.Id }, returnOrder);
         }
 
 

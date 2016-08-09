@@ -27,6 +27,7 @@ namespace FurnitureDelivery.Models
         [Required]
         [MinLength(7)]
         [MaxLength(12)]
+        [Phone]
         public String PhoneNumber { get; set; }
 
 

@@ -140,12 +140,14 @@ namespace FurnitureDelivery.Controllers
 
             //deleted not used addresses
             //add new addresses
+            addresses.ToList().ForEach(x => x.CustomerProfileId = profileId);
+
             foreach (var address in addresses)
             {
                 var dbAddress = db.CustomerAddresses.Where(x => x.Id == address.Id && x.CustomerProfileId == profileId).FirstOrDefault();
                 if(dbAddress == null || addressesCount < 3)//not exists with this id
                 {
-                    address.CustomerProfileId = profileId;
+                    //address.CustomerProfileId = profileId;
                     db.CustomerAddresses.Add(address);
                     addressesCount++;
                 }

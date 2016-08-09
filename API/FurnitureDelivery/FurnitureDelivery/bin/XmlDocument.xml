@@ -646,6 +646,11 @@
             Customer who is order owner (who orders)
             </summary>
         </member>
+        <member name="P:FurnitureDelivery.Models.Order.DeliveryAddressNumber">
+            <summary>
+            Which address is delivery address
+            </summary>
+        </member>
         <member name="T:FurnitureDelivery.Models.CustomerProfile">
             <summary>
             User's profile in API
