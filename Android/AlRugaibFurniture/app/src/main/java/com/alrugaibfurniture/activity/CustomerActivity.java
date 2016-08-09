@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.alrugaibfurniture.BuildConfig;
 import com.alrugaibfurniture.R;
+import com.alrugaibfurniture.model.LoginResponse;
 import com.alrugaibfurniture.util.Logger;
 import com.alrugaibfurniture.util.Util;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,7 +29,7 @@ import butterknife.OnClick;
 
 public class CustomerActivity extends Activity {
 
-    public static final String EXTRA_NUMBER = "numberExtra";
+    public static final String EXTRA_FROM_LOGIN = "extrauser";
     private static final int DEFAULT_ZOOM_LEVEL = 9;
 
     @Bind(R.id.input_email)
@@ -55,6 +56,7 @@ public class CustomerActivity extends Activity {
     private Marker secondMarker;
     private Marker thirdMarker;
     private Marker currentMarker;
+    private LoginResponse currentUser;
 
 
     @Override
@@ -67,10 +69,23 @@ public class CustomerActivity extends Activity {
         phone.getBackground().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
         phone.setTransformationMethod(null);
-        if (getIntent() != null && getIntent().hasExtra(EXTRA_NUMBER)) {
-            phone.setText(getIntent().getStringExtra(EXTRA_NUMBER));
+        if (getIntent() != null && getIntent().hasExtra(EXTRA_FROM_LOGIN)) {
+            currentUser = (LoginResponse) getIntent().getSerializableExtra(EXTRA_FROM_LOGIN);
+            initViewWithCurrent();
         }
         initMaps(savedInstanceState);
+    }
+
+    private void initViewWithCurrent() {
+        if(currentUser.getEmail() != null){
+            email.setText(currentUser.getEmail());
+        }
+        if(currentUser.getFullName() != null){
+            name.setText(currentUser.getFullName());
+        }
+        if(currentUser.getPhoneNumber() != null){
+            phone.setText(currentUser.getPhoneNumber());
+        }
     }
 
     /**

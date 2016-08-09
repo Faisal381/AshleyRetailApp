@@ -15,6 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alrugaibfurniture.R;
+import com.alrugaibfurniture.communication.ApiHelper;
+import com.alrugaibfurniture.model.LoginResponse;
+import com.alrugaibfurniture.util.Logger;
 import com.alrugaibfurniture.util.PrefsHelper;
 
 import java.util.Locale;
@@ -22,6 +25,9 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Activity that contains change of language and input of mobile number
@@ -67,9 +73,22 @@ public class LoginActivity extends Activity {
                 //On enter clicked in soft input
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     if (phoneInput.getText().length() >= 7 && phoneInput.getText().length() <= 12) {
-                        Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
-                        intent.putExtra(CustomerActivity.EXTRA_NUMBER, phoneInput.getText().toString());
-                        startActivity(intent);
+                        ApiHelper.getInstance().login(phoneInput.getText().toString() ,new Callback<LoginResponse>() {
+
+                            @Override
+                            public void onResponse(Response<LoginResponse> response, Retrofit retrofit) {
+                                Logger.logD("login","onResponse");
+
+                                Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
+                                intent.putExtra(CustomerActivity.EXTRA_FROM_LOGIN, response.body());
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable t) {
+                                Logger.logD("onFailure","onResponse");
+                            }
+                        });
                     } else if (phoneInput.getText().length() == 0) {
                         Toast.makeText(LoginActivity.this, R.string.input_phone, Toast.LENGTH_SHORT).show();
                     } else if (phoneInput.getText().length() > 12) {

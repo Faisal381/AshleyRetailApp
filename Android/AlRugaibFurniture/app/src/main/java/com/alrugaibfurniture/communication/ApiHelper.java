@@ -2,8 +2,8 @@ package com.alrugaibfurniture.communication;
 
 
 import com.alrugaibfurniture.BuildConfig;
+import com.alrugaibfurniture.model.LoginResponse;
 import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.util.concurrent.TimeUnit;
@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
-import retrofit.Response;
 import retrofit.Retrofit;
 
 /**
@@ -66,19 +65,8 @@ public class ApiHelper {
      *
      * @param phoneNumber
      */
-    public void login(String phoneNumber) {
-        Call<ResponseBody> call = apiService.login(phoneNumber);
-        call.enqueue(new Callback<ResponseBody>() {
-
-            @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+    public void login(String phoneNumber, Callback<LoginResponse> callback) {
+        Call<LoginResponse> call = apiService.login(phoneNumber);
+        call.enqueue(callback);
     }
 }
