@@ -4,6 +4,7 @@ import com.squareup.okhttp.ResponseBody;
 
 import retrofit.Call;
 import retrofit.http.GET;
+import retrofit.http.Path;
 
 /**
  * This class is a holder for all requests using Retrofit
@@ -11,9 +12,7 @@ import retrofit.http.GET;
 
 public interface ApiService {
 
-
-    @GET("/test")
-    Call<ResponseBody> getTest();
-
+    @GET("/api/CustomerProfiles/GetCustomerProfile?phone={phone}")
+    Call<ResponseBody> login(@Path("phone") String phoneNumber);
 
 }

@@ -6,11 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 
 import com.alrugaibfurniture.BuildConfig;
 import com.alrugaibfurniture.R;
+import com.alrugaibfurniture.util.Logger;
 import com.alrugaibfurniture.util.Util;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -73,6 +73,11 @@ public class CustomerActivity extends Activity {
         initMaps(savedInstanceState);
     }
 
+    /**
+     * Init maps and listeners
+     *
+     * @param savedInstanceState
+     */
     private void initMaps(Bundle savedInstanceState) {
         mapChoosen.onCreate(savedInstanceState);
         mapChoosen.getMapAsync(new OnMapReadyCallback() {
@@ -209,14 +214,14 @@ public class CustomerActivity extends Activity {
     void onSubmitClicked() {
         String validMsg = validInput();
 
-        Log.d("onSubmitClicked", validMsg+ " ");
+        Logger.logD("onSubmitClicked", validMsg + " ");
         if (validMsg == null) {
             StringBuilder builder = new StringBuilder();
             builder.append(getString(R.string.sure_to_submit));
-            builder.append(name.getText().toString()+"\n");
-            builder.append(phone.getText().toString()+"\n");
-            builder.append(email.getText().toString()+"\n");
-            builder.append("Address one"+"\n");
+            builder.append(name.getText().toString() + "\n");
+            builder.append(phone.getText().toString() + "\n");
+            builder.append(email.getText().toString() + "\n");
+            builder.append("Address one" + "\n");
 
             new AlertDialog.Builder(this)
                     .setTitle(R.string.confirmation)
@@ -225,7 +230,7 @@ public class CustomerActivity extends Activity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent a = new Intent(CustomerActivity.this, SplashActivity.class);
-                            a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NO_HISTORY);
+                            a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
                             startActivity(a);
                             finish();
                         }
@@ -248,7 +253,11 @@ public class CustomerActivity extends Activity {
         }
     }
 
-
+    /**
+     * Method validating input values when submitting
+     *
+     * @return
+     */
     private String validInput() {
         boolean isValid = true;
         StringBuilder builder = new StringBuilder();
@@ -259,22 +268,22 @@ public class CustomerActivity extends Activity {
 
         // builder.append("Please input correct:\n");
         if (name.getText().length() == 0) {
-            builder.append(getString(R.string.fill)+" " +getString(R.string.full_name) + "\n");
+            builder.append(getString(R.string.fill) + " " + getString(R.string.full_name) + "\n");
             isValid = false;
         }
-        if (email.getText().length() == 0 ) {
-            builder.append(getString(R.string.fill)+" " +getString(R.string.hint_email_address) + "\n");
+        if (email.getText().length() == 0) {
+            builder.append(getString(R.string.fill) + " " + getString(R.string.hint_email_address) + "\n");
             isValid = false;
-        }else if(!Util.isEmailValid(email.getText().toString())){
-            builder.append(getString(R.string.correct)+" " +getString(R.string.hint_email_address) + "\n");
+        } else if (!Util.isEmailValid(email.getText().toString())) {
+            builder.append(getString(R.string.correct) + " " + getString(R.string.hint_email_address) + "\n");
             isValid = false;
         }
 
         if (phone.getText().length() == 0) {
-            builder.append(getString(R.string.fill)+" " +getString(R.string.hint_phone_number) + "\n");
+            builder.append(getString(R.string.fill) + " " + getString(R.string.hint_phone_number) + "\n");
             isValid = false;
-        }else if(!Util.validCellPhone(phone.getText().toString())){
-            builder.append(getString(R.string.correct)+" "+getString(R.string.hint_phone_number) + "\n");
+        } else if (!Util.validCellPhone(phone.getText().toString())) {
+            builder.append(getString(R.string.correct) + " " + getString(R.string.hint_phone_number) + "\n");
             isValid = false;
         }
 

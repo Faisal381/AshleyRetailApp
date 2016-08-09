@@ -14,7 +14,9 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-
+/**
+ * Retrofit Api Helper
+ */
 public class ApiHelper {
 
     private static ApiHelper instance;
@@ -38,7 +40,7 @@ public class ApiHelper {
          * Create a service to make authed requests to the api
          */
         Retrofit builder = new Retrofit.Builder()
-                .baseUrl("base URL here")
+                .baseUrl("http://furnituredeliverydemo.azurewebsites.net/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();
@@ -46,6 +48,11 @@ public class ApiHelper {
         apiService = builder.create(ApiService.class);
     }
 
+    /**
+     * Singleton
+     *
+     * @return isntace of ApiHelper
+     */
     public static ApiHelper getInstance() {
         if (instance == null) {
             instance = new ApiHelper();
@@ -56,10 +63,11 @@ public class ApiHelper {
 
     /**
      * Send API request to check if number is in Database
+     *
      * @param phoneNumber
      */
-    public void getLogin(long phoneNumber) {
-        Call<ResponseBody> call = apiService.getTest();
+    public void login(String phoneNumber) {
+        Call<ResponseBody> call = apiService.login(phoneNumber);
         call.enqueue(new Callback<ResponseBody>() {
 
             @Override
