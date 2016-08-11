@@ -555,16 +555,9 @@
             <param name="invoiceNumber">Invoice number string</param>
             <returns></returns>
         </member>
-        <member name="M:FurnitureDelivery.Controllers.OrdersController.PostOrder(FurnitureDelivery.Models.Order)">
-            <summary>
-            Saves order to database. All fields are requred!
-            </summary>
-            <param name="order"></param>
-            <returns></returns>
-        </member>
         <member name="M:FurnitureDelivery.Controllers.OrdersController.PostOrderWithProfileUpdate(FurnitureDelivery.Models.Order)">
             <summary>
-            Saves (or updates) order to database depending if invoice number exists in database.
+            Saves order to database or updates if invoice number exists in database.
             Also user's profile in order is updated
             All fields are requred!
             </summary>
@@ -651,6 +644,12 @@
             Which address is delivery address
             </summary>
         </member>
+        <member name="M:FurnitureDelivery.Models.Order.Clone">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:FurnitureDelivery.Models.CustomerProfile">
             <summary>
             User's profile in API
@@ -676,7 +675,7 @@
             User's Name
             </summary>
         </member>
-        <member name="P:FurnitureDelivery.Models.CustomerProfile.DeliveryAddresses">
+        <member name="P:FurnitureDelivery.Models.CustomerProfile.ContactAddresses">
             <summary>
             List of delivery addresses
             </summary>

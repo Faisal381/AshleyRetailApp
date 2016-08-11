@@ -19,6 +19,7 @@ namespace FurnitureDelivery.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ApiExplorerSettings(IgnoreApi = true)]
+        [JsonIgnore]
         public int Id { get; set; }
 
         /// <summary>
@@ -35,6 +36,7 @@ namespace FurnitureDelivery.Models
         /// <summary>
         /// 
         /// </summary>
+        [JsonIgnore]
         public int DeliveryAddressId { get; set; }
         
         /// <summary>
@@ -46,6 +48,7 @@ namespace FurnitureDelivery.Models
         /// <summary>
         /// 
         /// </summary>
+        [JsonIgnore]
         public int CustomerProfileId { get; set; }
 
         /// <summary>
@@ -60,5 +63,15 @@ namespace FurnitureDelivery.Models
         /// </summary>
         [NotMapped]
         public int? DeliveryAddressNumber { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        //[JsonIgnore]
+        public Order Clone()
+        {
+            return (Order)this.MemberwiseClone();
+        }
     }
 }

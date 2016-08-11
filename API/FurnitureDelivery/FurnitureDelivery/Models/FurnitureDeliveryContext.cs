@@ -7,6 +7,9 @@ using System.Web;
 
 namespace FurnitureDelivery.Models
 {
+    /// <summary>
+    /// Database context to handle connection between database and api
+    /// </summary>
     public class FurnitureDeliveryContext : DbContext
     {
         // You can add custom code to this file. Changes will not be overwritten.
@@ -22,8 +25,6 @@ namespace FurnitureDelivery.Models
         }
 
         public System.Data.Entity.DbSet<FurnitureDelivery.Models.CustomerProfile> CustomerProfiles { get; set; }
-
-        //public System.Data.Entity.DbSet<FurnitureDelivery.Models.CustomerCity> CustomerCities { get; set; }
 
         public System.Data.Entity.DbSet<FurnitureDelivery.Models.CustomerAddress> CustomerAddresses { get; set; }
 
