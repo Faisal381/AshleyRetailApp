@@ -19,6 +19,7 @@ namespace FurnitureDelivery.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ApiExplorerSettings(IgnoreApi = true)]
+        [JsonIgnore]
         public int Id { get; set; }
 
         /// <summary>
@@ -46,12 +47,12 @@ namespace FurnitureDelivery.Models
         /// <summary>
         /// List of delivery addresses
         /// </summary>
-        public virtual ICollection<CustomerAddress> DeliveryAddresses { get; set; }
+        public virtual ICollection<CustomerAddress> ContactAddresses { get; set; }
 
 
         public CustomerProfile()
         {
-            this.DeliveryAddresses = new List<CustomerAddress>();
+            this.ContactAddresses = new List<CustomerAddress>();
         }
 
     }

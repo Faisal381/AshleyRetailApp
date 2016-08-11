@@ -16,6 +16,7 @@ namespace FurnitureDelivery.Models
         /// 
         /// </summary>
         [Key]
+        //[JsonIgnore]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
@@ -23,6 +24,7 @@ namespace FurnitureDelivery.Models
         /// 
         /// </summary>
         [ApiExplorerSettings(IgnoreApi = true)]
+        [JsonIgnore]
         public int? CustomerProfileId { get; set; }
 
         /// <summary>
@@ -30,6 +32,7 @@ namespace FurnitureDelivery.Models
         /// </summary>
         [ForeignKey("CustomerProfileId")]
         [ApiExplorerSettings(IgnoreApi = true)]
+        [JsonIgnore]
         public virtual CustomerProfile CustomerProfile { get; set; }
 
         /// <summary>

@@ -20,6 +20,7 @@ namespace FurnitureDelivery.Controllers
     /// </summary>
     public class OrdersController : ApiController
     {
+        //database context
         private FurnitureDeliveryContext db = new FurnitureDeliveryContext();
 
         /// <summary>
@@ -35,36 +36,41 @@ namespace FurnitureDelivery.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(order);
-        }
-
-
-
-        /// <summary>
-        /// Saves order to database. All fields are requred!
-        /// </summary>
-        /// <param name="order"></param>
-        /// <returns></returns>
-        [ResponseType(typeof(Order))]
-        [HttpPost]
-        [ActionName("PostOrder")]
-        public async Task<IHttpActionResult> PostOrder(Order order)
-        {
-            if (!ModelState.IsValid)
+            var resultOrder = new Order()
             {
-                return BadRequest(ModelState);
-            }
+                CustomerProfileId = order.CustomerProfileId,
+                DeliveryAddress = order.DeliveryAddress,
+                DeviceId = order.DeviceId,
+                InvoiceNumber = order.InvoiceNumber
+            };
 
-            db.Orders.Add(order);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = order.Id }, order);
+            return Ok(resultOrder);
         }
+
+        ///// <summary>
+        ///// Saves order to database. All fields are requred!
+        ///// </summary>
+        ///// <param name="order"></param>
+        ///// <returns></returns>
+        //[ResponseType(typeof(Order))]
+        //[HttpPost]
+        //[ActionName("PostOrder")]
+        //public async Task<IHttpActionResult> PostOrder(Order order)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    db.Orders.Add(order);
+        //    await db.SaveChangesAsync();
+
+        //    return CreatedAtRoute("DefaultApi", new { id = order.Id }, order);
+        //}
 
 
         /// <summary>
-        /// Saves (or updates) order to database depending if invoice number exists in database.
+        /// Saves order to database or updates if invoice number exists in database.
         /// Also user's profile in order is updated
         /// All fields are requred!
         /// </summary>
@@ -88,7 +94,7 @@ namespace FurnitureDelivery.Controllers
 
             order.CustomerProfile = null;
             order.CustomerProfileId = existingProfile.Id;
-            order.DeliveryAddressId = existingProfile.DeliveryAddresses.ToList()[order.DeliveryAddressNumber.Value].Id;
+            order.DeliveryAddressId = existingProfile.ContactAddresses.ToList()[order.DeliveryAddressNumber.Value].Id;
 
             var existingOrder = db.Orders.Where(e => e.InvoiceNumber == order.InvoiceNumber).FirstOrDefault();
 
@@ -110,6 +116,10 @@ namespace FurnitureDelivery.Controllers
         }
 
 
+        /// <summary>
+        /// Close connection
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

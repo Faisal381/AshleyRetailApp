@@ -34,7 +34,7 @@ namespace FurnitureDelivery.Controllers
         {
             phone = phone.Replace(" ","");//ignore spaces
 
-            var result = db.CustomerProfiles.Where(x => x.PhoneNumber == phone).Include(item => item.DeliveryAddresses).Select(q => q).ToList();
+            var result = db.CustomerProfiles.Where(x => x.PhoneNumber == phone).Include(item => item.ContactAddresses).Select(q => q).ToList();
 
             if(result.Count() == 0) //no records - add record
             {
@@ -88,7 +88,7 @@ namespace FurnitureDelivery.Controllers
             await db.SaveChangesAsync();
 
 
-            var returnProfile = db.CustomerProfiles.Include(p => p.DeliveryAddresses).Where(x => x.PhoneNumber == phone).FirstOrDefault();
+            var returnProfile = db.CustomerProfiles.Include(p => p.ContactAddresses).Where(x => x.PhoneNumber == phone).FirstOrDefault();
             return CreatedAtRoute("DefaultApi", new { phone = customerProfile.PhoneNumber }, returnProfile);
         }
 
@@ -97,7 +97,7 @@ namespace FurnitureDelivery.Controllers
         public async Task updateCustomerProfile(String phone, CustomerProfile customerProfile)
         {
             phone.Replace(" ", "");//ignore spaces
-            var profile = db.CustomerProfiles.Include(p => p.DeliveryAddresses).Where(x => x.PhoneNumber == phone).FirstOrDefault();
+            var profile = db.CustomerProfiles.Include(p => p.ContactAddresses).Where(x => x.PhoneNumber == phone).FirstOrDefault();
 
             if (profile == null)//if no profile then create
             {
@@ -111,7 +111,7 @@ namespace FurnitureDelivery.Controllers
 
                 db.Entry(profile).CurrentValues.SetValues(customerProfile);
 
-                await UpdateAddresses(customerProfile.Id, customerProfile.DeliveryAddresses);
+                await UpdateAddresses(customerProfile.Id, customerProfile.ContactAddresses);
             }
 
         }
