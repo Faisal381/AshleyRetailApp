@@ -6,21 +6,22 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Address  implements Serializable {
+public class Address implements Serializable {
 
     @SerializedName("Id")
     int id;
-    @SerializedName("CustomerProfileId")
-    int customerProfileId;
     @SerializedName("Name")
-    String Name;
+    String name;
     @SerializedName("Lat")
     double lat;
     @SerializedName("Lon")
     double lon;
 
-    public int getCustomerProfileId() {
-        return customerProfileId;
+    public Address(int id, String name, double lat, double lon){
+        this.id = id;
+        this.name = name;
+        this.lat = lat;
+        this.lon = lon;
     }
 
     public int getId() {
@@ -36,7 +37,7 @@ public class Address  implements Serializable {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public LatLng getLocation(){

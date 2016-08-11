@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.alrugaibfurniture.R;
 import com.alrugaibfurniture.communication.ApiHelper;
-import com.alrugaibfurniture.model.LoginResponse;
+import com.alrugaibfurniture.model.CustomerProfile;
 import com.alrugaibfurniture.util.Logger;
 import com.alrugaibfurniture.util.PrefsHelper;
 
@@ -73,11 +73,11 @@ public class LoginActivity extends Activity {
                 //On enter clicked in soft input
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     if (phoneInput.getText().length() >= 7 && phoneInput.getText().length() <= 12) {
-                        ApiHelper.getInstance().login(phoneInput.getText().toString() ,new Callback<LoginResponse>() {
+                        ApiHelper.getInstance().login(phoneInput.getText().toString(), new Callback<CustomerProfile>() {
 
                             @Override
-                            public void onResponse(Response<LoginResponse> response, Retrofit retrofit) {
-                                Logger.logD("login","onResponse");
+                            public void onResponse(Response<CustomerProfile> response, Retrofit retrofit) {
+                                Logger.logD("login", "onResponse");
 
                                 Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
                                 intent.putExtra(CustomerActivity.EXTRA_FROM_LOGIN, response.body());
@@ -86,7 +86,7 @@ public class LoginActivity extends Activity {
 
                             @Override
                             public void onFailure(Throwable t) {
-                                Logger.logD("onFailure","onResponse");
+                                Logger.logD("onFailure", "onResponse");
                             }
                         });
                     } else if (phoneInput.getText().length() == 0) {

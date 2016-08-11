@@ -6,29 +6,24 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class LoginResponse implements Serializable {
+public class CustomerProfile implements Serializable {
 
-    @SerializedName("Id")
-    int id;
     @SerializedName("PhoneNumber")
     String phoneNumber;
     @SerializedName("Email")
     String email;
     @SerializedName("FullName")
     String fullName;
-    @SerializedName("DeliveryAddresses")
-    ArrayList<Address> deliveryAddresses;
+    @SerializedName("ContactAddresses")
+    ArrayList<Address> contactAddresses;
+
 
     public ArrayList<Address> getDeliveryAddresses() {
-        return deliveryAddresses;
+        return contactAddresses;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getEmail() {
@@ -37,5 +32,22 @@ public class LoginResponse implements Serializable {
 
     public String getFullName() {
         return fullName;
+    }
+
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setContactAddresses(ArrayList<Address> contactAddresses) {
+        this.contactAddresses = contactAddresses;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

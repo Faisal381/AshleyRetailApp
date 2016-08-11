@@ -2,8 +2,10 @@ package com.alrugaibfurniture.communication;
 
 
 import com.alrugaibfurniture.BuildConfig;
-import com.alrugaibfurniture.model.LoginResponse;
+import com.alrugaibfurniture.model.CustomerProfile;
+import com.alrugaibfurniture.model.OrderRequest;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.util.concurrent.TimeUnit;
@@ -65,8 +67,13 @@ public class ApiHelper {
      *
      * @param phoneNumber
      */
-    public void login(String phoneNumber, Callback<LoginResponse> callback) {
-        Call<LoginResponse> call = apiService.login(phoneNumber);
+    public void login(String phoneNumber, Callback<CustomerProfile> callback) {
+        Call<CustomerProfile> call = apiService.login(phoneNumber);
+        call.enqueue(callback);
+    }
+
+    public void makeOrder(OrderRequest orderRequest, Callback<OrderRequest> callback) {
+        Call<OrderRequest> call = apiService.postOrder(orderRequest);
         call.enqueue(callback);
     }
 }

@@ -121,13 +121,37 @@
             android:text="@string/saved_addresses"
             android:textColor="@color/colorAccent" />
 
+        <EditText
+            android:id="@+id/first_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/first_address"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@android:color/darker_gray" />
+
+
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_first"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="8dp"
-
             android:layout_weight="1" />
+
+
+        <EditText
+            android:id="@+id/second_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/second_address"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@android:color/darker_gray" />
+
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_second"
@@ -135,6 +159,19 @@
             android:layout_height="0dp"
             android:layout_margin="8dp"
             android:layout_weight="1" />
+
+
+        <EditText
+            android:id="@+id/third_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/third_address"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@android:color/darker_gray" />
+
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_third"

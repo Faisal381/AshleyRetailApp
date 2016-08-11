@@ -6,8 +6,6 @@
     <string name="delivery_address">عنوان التوصيل</string>
     <string name="saved_addresses"> عناوين محفوظة</string>
 
-
-
     <string name="confirmation">تأكيد</string>
     <string name="information_incomplete">Following information are incomplete</string>
     <string name="sure_to_submit">Are you sure you want submit order to: </string>
@@ -19,4 +17,10 @@
     <string name="confirm">أكد</string>
     <string name="input_phone">Please input phone number</string>
     <string name="phone_to_short">Phone number is to short</string>
+    <string name="phone_to_long">Phone number is to long</string>
+    <string name="invoice_number">Invoice Number</string>
+    <string name="order_done">Thank You, come again!</string>
+    <string name="first_address">First Address</string>
+    <string name="second_address">Second Address</string>
+    <string name="third_address">Third Address</string>
 </resources>

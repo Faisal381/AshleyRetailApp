@@ -6,11 +6,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.alrugaibfurniture.BuildConfig;
 import com.alrugaibfurniture.R;
-import com.alrugaibfurniture.model.LoginResponse;
+import com.alrugaibfurniture.communication.ApiHelper;
+import com.alrugaibfurniture.model.Address;
+import com.alrugaibfurniture.model.CustomerProfile;
+import com.alrugaibfurniture.model.OrderRequest;
 import com.alrugaibfurniture.util.Logger;
 import com.alrugaibfurniture.util.Util;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,15 +27,21 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.okhttp.ResponseBody;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 
 public class CustomerActivity extends Activity {
 
-    public static final String EXTRA_FROM_LOGIN = "extrauser";
+    public static final String EXTRA_FROM_LOGIN = "extra_user";
     private static final int DEFAULT_ZOOM_LEVEL = 9;
 
     @Bind(R.id.input_email)
@@ -38,6 +50,13 @@ public class CustomerActivity extends Activity {
     EditText phone;
     @Bind(R.id.input_name)
     EditText name;
+
+    @Bind(R.id.first_address)
+    EditText firstName;
+    @Bind(R.id.second_address)
+    EditText secondName;
+    @Bind(R.id.third_address)
+    EditText thirdName;
 
     @Bind(R.id.map_choosen)
     MapView mapChoosen;
@@ -56,7 +75,8 @@ public class CustomerActivity extends Activity {
     private Marker secondMarker;
     private Marker thirdMarker;
     private Marker currentMarker;
-    private LoginResponse currentUser;
+    private CustomerProfile currentUser;
+    private int currentAddressNumber = -1;
 
 
     @Override
@@ -70,20 +90,20 @@ public class CustomerActivity extends Activity {
 
         phone.setTransformationMethod(null);
         if (getIntent() != null && getIntent().hasExtra(EXTRA_FROM_LOGIN)) {
-            currentUser = (LoginResponse) getIntent().getSerializableExtra(EXTRA_FROM_LOGIN);
+            currentUser = (CustomerProfile) getIntent().getSerializableExtra(EXTRA_FROM_LOGIN);
             initViewWithCurrent();
         }
         initMaps(savedInstanceState);
     }
 
     private void initViewWithCurrent() {
-        if(currentUser.getEmail() != null){
+        if (currentUser.getEmail() != null) {
             email.setText(currentUser.getEmail());
         }
-        if(currentUser.getFullName() != null){
+        if (currentUser.getFullName() != null) {
             name.setText(currentUser.getFullName());
         }
-        if(currentUser.getPhoneNumber() != null){
+        if (currentUser.getPhoneNumber() != null) {
             phone.setText(currentUser.getPhoneNumber());
         }
     }
@@ -108,11 +128,21 @@ public class CustomerActivity extends Activity {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 first = googleMap;
-                first.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(BuildConfig.MAP_HEIGHT, BuildConfig.MAP_WIDTH), DEFAULT_ZOOM_LEVEL));
+                Address address = getAddress(0);
+                if (address != null) {
+                    firstMarker = first.addMarker(new MarkerOptions()
+                            .position(address.getLocation())
+                            .title("First address")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    firstName.setText(address.getName());
+                }
+                first.moveCamera(CameraUpdateFactory.newLatLngZoom(firstMarker != null ?
+                        firstMarker.getPosition() :
+                        new LatLng(BuildConfig.MAP_HEIGHT, BuildConfig.MAP_WIDTH), DEFAULT_ZOOM_LEVEL));
                 first.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
-                        updateCurrentMarker(firstMarker);
+                        updateCurrentMarker(firstMarker, 0);
                         setBorderToChoosenMap(0);
                     }
                 });
@@ -127,7 +157,7 @@ public class CustomerActivity extends Activity {
                                     .title("First address")
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                         }
-                        updateCurrentMarker(firstMarker);
+                        updateCurrentMarker(firstMarker, 0);
                         setBorderToChoosenMap(0);
                     }
                 });
@@ -138,11 +168,22 @@ public class CustomerActivity extends Activity {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 second = googleMap;
-                second.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(BuildConfig.MAP_HEIGHT, BuildConfig.MAP_WIDTH), DEFAULT_ZOOM_LEVEL));
+                Address address = getAddress(1);
+                if (address != null) {
+                    secondMarker = second.addMarker(new MarkerOptions()
+                            .position(address.getLocation())
+                            .title("Second address")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    secondName.setText(address.getName());
+                }
+                second.moveCamera(CameraUpdateFactory.newLatLngZoom(secondMarker != null ?
+                        secondMarker.getPosition() :
+                        new LatLng(BuildConfig.MAP_HEIGHT, BuildConfig.MAP_WIDTH), DEFAULT_ZOOM_LEVEL));
+
                 second.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
-                        updateCurrentMarker(secondMarker);
+                        updateCurrentMarker(secondMarker, 1);
                         setBorderToChoosenMap(1);
                     }
                 });
@@ -157,7 +198,7 @@ public class CustomerActivity extends Activity {
                                     .title("Second address")
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                         }
-                        updateCurrentMarker(secondMarker);
+                        updateCurrentMarker(secondMarker, 1);
                         setBorderToChoosenMap(1);
                     }
                 });
@@ -168,11 +209,21 @@ public class CustomerActivity extends Activity {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 third = googleMap;
-                third.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(BuildConfig.MAP_HEIGHT, BuildConfig.MAP_WIDTH), DEFAULT_ZOOM_LEVEL));
+                Address address = getAddress(2);
+                if (address != null) {
+                    thirdMarker = third.addMarker(new MarkerOptions()
+                            .position(address.getLocation())
+                            .title("Third address")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    thirdName.setText(address.getName());
+                }
+                third.moveCamera(CameraUpdateFactory.newLatLngZoom(thirdMarker != null ?
+                        thirdMarker.getPosition() :
+                        new LatLng(BuildConfig.MAP_HEIGHT, BuildConfig.MAP_WIDTH), DEFAULT_ZOOM_LEVEL));
                 third.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng latLng) {
-                        updateCurrentMarker(thirdMarker);
+                        updateCurrentMarker(thirdMarker, 2);
                         setBorderToChoosenMap(2);
                     }
                 });
@@ -187,7 +238,7 @@ public class CustomerActivity extends Activity {
                                     .title("Third address")
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                         }
-                        updateCurrentMarker(thirdMarker);
+                        updateCurrentMarker(thirdMarker, 2);
                         setBorderToChoosenMap(2);
                     }
                 });
@@ -195,7 +246,20 @@ public class CustomerActivity extends Activity {
         });
     }
 
-    private void updateCurrentMarker(Marker marker) {
+    @Nullable
+    private Address getAddress(int which) {
+        if (currentUser.getDeliveryAddresses() == null) {
+            return null;
+        }
+        if (which < currentUser.getDeliveryAddresses().size()) {
+            return currentUser.getDeliveryAddresses().get(which);
+        }
+        return null;
+
+    }
+
+    private void updateCurrentMarker(Marker marker, int which) {
+        currentAddressNumber = which;
         if (marker == null) {
             if (currentMarker != null) {
                 currentMarker.remove();
@@ -227,7 +291,7 @@ public class CustomerActivity extends Activity {
 
     @OnClick(R.id.submit_button)
     void onSubmitClicked() {
-        String validMsg = validInput();
+        final String validMsg = validInput();
 
         Logger.logD("onSubmitClicked", validMsg + " ");
         if (validMsg == null) {
@@ -236,23 +300,30 @@ public class CustomerActivity extends Activity {
             builder.append(name.getText().toString() + "\n");
             builder.append(phone.getText().toString() + "\n");
             builder.append(email.getText().toString() + "\n");
-            builder.append("Address one" + "\n");
+            builder.append(currentAddressNumber == 0 ? firstName.getText().toString()
+                    : (currentAddressNumber == 1 ? secondName.getText().toString() :
+                    thirdName.getText().toString()) + "\n");
 
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.confirmation)
-                    .setMessage(builder.toString())
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent a = new Intent(CustomerActivity.this, SplashActivity.class);
-                            a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                            startActivity(a);
-                            finish();
-                        }
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            final EditText edittext = new EditText(this);
+            edittext.setHint(R.string.invoice_number);
+            edittext.setSingleLine();
+            alert.setMessage(builder.toString());
+            alert.setTitle(R.string.confirmation);
 
-                    })
-                    .setNegativeButton(R.string.cancel, null)
-                    .show();
+            alert.setView(edittext);
+
+            alert.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    String value = edittext.getText().toString();
+                    if (value.length() > 0) {
+                        makeOrder(value);
+                    }
+                }
+            });
+
+            alert.setNegativeButton(R.string.cancel, null);
+            alert.show();
         } else {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.information_incomplete)
@@ -266,6 +337,58 @@ public class CustomerActivity extends Activity {
                     })
                     .show();
         }
+    }
+
+    private void makeOrder(String value) {
+        updateCurrentUser();
+
+        OrderRequest order = new OrderRequest();
+        order.setCustomerProfile(currentUser);
+        order.setDeliveryAddress(new Address(currentAddressNumber, currentAddressNumber == 0 ?
+                firstName.getText().toString()
+                : (currentAddressNumber == 1 ? secondName.getText().toString() :
+                thirdName.getText().toString()),
+                currentMarker.getPosition().latitude, currentMarker.getPosition().longitude));
+        order.setDeviceId(Settings.Secure.getString(CustomerActivity.this.getContentResolver(),
+                Settings.Secure.ANDROID_ID));
+        order.setDeliveryAddressNumber(currentAddressNumber);
+        order.setInvoiceNumber(value);
+        ApiHelper.getInstance().makeOrder(order, new Callback<OrderRequest>() {
+            @Override
+            public void onResponse(Response<OrderRequest> response, Retrofit retrofit) {
+                Toast.makeText(CustomerActivity.this, R.string.order_done, Toast.LENGTH_LONG).show();
+                Intent a = new Intent(CustomerActivity.this, SplashActivity.class);
+                a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(a);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Toast.makeText(CustomerActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateCurrentUser() {
+        currentUser.setEmail(email.getText().toString());
+        currentUser.setFullName(name.getText().toString());
+        currentUser.setPhoneNumber(phone.getText().toString());
+        //update current user
+        ArrayList<Address> addresses = new ArrayList<>(3);
+        if (firstMarker != null) {
+            addresses.add(new Address(0, "First address",
+                    firstMarker.getPosition().latitude, firstMarker.getPosition().longitude));
+        }
+        if (secondMarker != null) {
+            addresses.add(new Address(1, "Second address",
+                    secondMarker.getPosition().latitude, secondMarker.getPosition().longitude));
+        }
+        if (thirdMarker != null) {
+            addresses.add(new Address(2, "Third address",
+                    thirdMarker.getPosition().latitude, thirdMarker.getPosition().longitude));
+        }
+        currentUser.setContactAddresses(addresses);
     }
 
     /**
