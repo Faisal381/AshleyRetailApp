@@ -2,8 +2,8 @@ package com.alrugaibfurniture.communication;
 
 
 import com.alrugaibfurniture.BuildConfig;
+import com.alrugaibfurniture.model.LoginResponse;
 import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.util.concurrent.TimeUnit;
@@ -11,10 +11,11 @@ import java.util.concurrent.TimeUnit;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
-import retrofit.Response;
 import retrofit.Retrofit;
 
-
+/**
+ * Retrofit Api Helper
+ */
 public class ApiHelper {
 
     private static ApiHelper instance;
@@ -38,7 +39,7 @@ public class ApiHelper {
          * Create a service to make authed requests to the api
          */
         Retrofit builder = new Retrofit.Builder()
-                .baseUrl("base URL here")
+                .baseUrl("http://furnituredeliverydemo.azurewebsites.net/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();
@@ -46,6 +47,11 @@ public class ApiHelper {
         apiService = builder.create(ApiService.class);
     }
 
+    /**
+     * Singleton
+     *
+     * @return isntace of ApiHelper
+     */
     public static ApiHelper getInstance() {
         if (instance == null) {
             instance = new ApiHelper();
@@ -56,21 +62,11 @@ public class ApiHelper {
 
     /**
      * Send API request to check if number is in Database
+     *
      * @param phoneNumber
      */
-    public void getLogin(long phoneNumber) {
-        Call<ResponseBody> call = apiService.getTest();
-        call.enqueue(new Callback<ResponseBody>() {
-
-            @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+    public void login(String phoneNumber, Callback<LoginResponse> callback) {
+        Call<LoginResponse> call = apiService.login(phoneNumber);
+        call.enqueue(callback);
     }
 }

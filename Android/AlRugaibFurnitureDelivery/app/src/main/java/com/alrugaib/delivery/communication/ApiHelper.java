@@ -1,23 +1,16 @@
 package com.alrugaib.delivery.communication;
 
 
-import android.util.Log;
-
 import com.alrugaib.delivery.BuildConfig;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.util.concurrent.TimeUnit;
 
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
-import retrofit.Response;
 import retrofit.Retrofit;
 
 
@@ -42,16 +35,18 @@ public class ApiHelper {
         }
 
         /*
-         * Create a service to make authed requests to the api
+         * Create a service to make API requests
          */
         Retrofit builder = new Retrofit.Builder()
-                .baseUrl("http://maps.googleapis.com/")
+                .baseUrl("http://furnituredeliverydemo.azurewebsites.net/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();
 
         apiService = builder.create(ApiService.class);
-
+        /*
+         * Create a service to make Google API requests
+         */
         builder = new Retrofit.Builder()
                 .baseUrl("http://maps.googleapis.com/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -61,6 +56,9 @@ public class ApiHelper {
         googleService = builder.create(ApiService.class);
     }
 
+    /**
+     * Singleton
+     */
     public static ApiHelper getInstance() {
         if (instance == null) {
             instance = new ApiHelper();
@@ -70,29 +68,12 @@ public class ApiHelper {
 
 
     /**
-     * Send API request to check if number is in Database
-     *
-     * @param phoneNumber
+     * Get Google Directions from url with waypoints
+     * @param url
+     * @param callback
      */
-    public void getLogin(long phoneNumber) {
-        Call<ResponseBody> call = apiService.getTest();
-        call.enqueue(new Callback<ResponseBody>() {
-
-            @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-    }
-
-
     public void getDirections(String url, Callback<ResponseBody> callback) {
-        Call<ResponseBody> call = apiService.getDirections(url);
+        Call<ResponseBody> call = googleService.getDirections(url);
         call.enqueue(callback);
     }
 }

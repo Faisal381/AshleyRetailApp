@@ -10,7 +10,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Adapter for order list
+ */
 public class OrderAdapter extends BaseAdapter {
     private List<OrderModel> dataset;
     private LayoutInflater inflater;
@@ -25,12 +27,20 @@ public class OrderAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
     }
 
+    /**
+     * Add element to dataset , mark is as not sorted anymore
+     * @param element
+     */
     public void addElement(OrderModel element) {
         dataset.add(element);
         isSorted = false;
         notifyDataSetChanged();
     }
 
+    /**
+     * Change dataset to new one
+     * @param newDataset
+     */
     public void updateDataset(List<OrderModel> newDataset) {
         dataset = newDataset;
         isSorted = true;
@@ -62,7 +72,7 @@ public class OrderAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
-
+        //Init item in adapter
         final View row;
         row = inflater.inflate(R.layout.item_list, null);
         TextView invoiceNumber = (TextView) row.findViewById(R.id.invoice_number);
@@ -85,6 +95,9 @@ public class OrderAdapter extends BaseAdapter {
         return row;
     }
 
+    /**
+     * Callback interface to provide communication with top layer
+     */
     public interface AdapterCallback {
         void onNavigateClicked(OrderModel model);
 

@@ -25,5 +25,6 @@
     <string name="confirm">Confirm</string>
     <string name="input_phone">Please input phone number</string>
     <string name="phone_to_short">Phone number is to short</string>
+    <string name="phone_to_long">Phone number is to long</string>
 
 </resources>

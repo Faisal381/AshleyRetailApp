@@ -8,7 +8,12 @@ import java.util.regex.Pattern;
 
 public class Util {
 
-
+    /**
+     * Method validating email with regex
+     *
+     * @param email
+     * @return
+     */
     public static boolean isEmailValid(String email) {
         boolean isValid = false;
 
@@ -23,9 +28,10 @@ public class Util {
         return isValid;
     }
 
-
-    public static boolean validCellPhone(String number)
-    {
+    /**
+     * Method validating phone number
+     */
+    public static boolean validCellPhone(String number) {
         return Patterns.PHONE.matcher(number).matches();
     }
 

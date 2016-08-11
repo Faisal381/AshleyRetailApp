@@ -1,9 +1,10 @@
 package com.alrugaibfurniture.communication;
 
-import com.squareup.okhttp.ResponseBody;
+import com.alrugaibfurniture.model.LoginResponse;
 
 import retrofit.Call;
 import retrofit.http.GET;
+import retrofit.http.Query;
 
 /**
  * This class is a holder for all requests using Retrofit
@@ -11,9 +12,7 @@ import retrofit.http.GET;
 
 public interface ApiService {
 
-
-    @GET("/test")
-    Call<ResponseBody> getTest();
-
+    @GET("/api/CustomerProfiles/GetCustomerProfile")
+    Call<LoginResponse> login(@Query("phone") String phoneNumber);
 
 }
