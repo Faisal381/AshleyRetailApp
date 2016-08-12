@@ -1,10 +1,12 @@
 package com.alrugaib.delivery.communication;
 
+import com.alrugaib.delivery.model.Order;
 import com.squareup.okhttp.ResponseBody;
 
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Path;
+import retrofit.http.Query;
 import retrofit.http.Url;
 
 /**
@@ -13,8 +15,8 @@ import retrofit.http.Url;
 public interface ApiService {
 
 
-    @GET("/api/CustomerProfiles/GetCustomerProfile?phone={phone}")
-    Call<ResponseBody> login(@Path("phone") String phoneNumber);
+    @GET("/api/Orders/GetOrder")
+    Call<Order> getOrder(@Query("invoiceNumber") String invoiceNumber);
 
 
     @GET

@@ -2,6 +2,7 @@ package com.alrugaib.delivery.communication;
 
 
 import com.alrugaib.delivery.BuildConfig;
+import com.alrugaib.delivery.model.Order;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
@@ -38,7 +39,7 @@ public class ApiHelper {
          * Create a service to make API requests
          */
         Retrofit builder = new Retrofit.Builder()
-                .baseUrl("http://furnituredeliverydemo.azurewebsites.net/")
+                .baseUrl("http://furnituredeliverydemo.azurewebsites.net")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();
@@ -66,6 +67,10 @@ public class ApiHelper {
         return instance;
     }
 
+    public void getOrder(String invoiceNumber, Callback<Order> callback) {
+        Call<Order> call = apiService.getOrder(invoiceNumber);
+        call.enqueue(callback);
+    }
 
     /**
      * Get Google Directions from url with waypoints

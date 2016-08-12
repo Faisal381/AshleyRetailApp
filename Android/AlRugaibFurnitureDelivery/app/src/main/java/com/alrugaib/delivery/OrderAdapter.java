@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.alrugaib.delivery.model.Order;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
  * Adapter for order list
  */
 public class OrderAdapter extends BaseAdapter {
-    private List<OrderModel> dataset;
+    private List<Order> dataset;
     private LayoutInflater inflater;
     private AdapterCallback callback;
     private boolean isSorted = false;
@@ -31,7 +33,7 @@ public class OrderAdapter extends BaseAdapter {
      * Add element to dataset , mark is as not sorted anymore
      * @param element
      */
-    public void addElement(OrderModel element) {
+    public void addElement(Order element) {
         dataset.add(element);
         isSorted = false;
         notifyDataSetChanged();
@@ -41,13 +43,13 @@ public class OrderAdapter extends BaseAdapter {
      * Change dataset to new one
      * @param newDataset
      */
-    public void updateDataset(List<OrderModel> newDataset) {
+    public void updateDataset(List<Order> newDataset) {
         dataset = newDataset;
         isSorted = true;
         notifyDataSetChanged();
     }
 
-    public List<OrderModel> getDataset() {
+    public List<Order> getDataset() {
         return dataset;
     }
 
@@ -61,13 +63,13 @@ public class OrderAdapter extends BaseAdapter {
     }
 
     @Override
-    public OrderModel getItem(int position) {
+    public Order getItem(int position) {
         return dataset.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return dataset.get(position).getInvoiceNumber();
+        return 0;
     }
 
     @Override
@@ -99,7 +101,7 @@ public class OrderAdapter extends BaseAdapter {
      * Callback interface to provide communication with top layer
      */
     public interface AdapterCallback {
-        void onNavigateClicked(OrderModel model);
+        void onNavigateClicked(Order model);
 
         void onItemRemoved(int position);
     }

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alrugaib.delivery.communication.ApiHelper;
+import com.alrugaib.delivery.model.Order;
 import com.squareup.okhttp.ResponseBody;
 
 import org.json.JSONArray;
@@ -110,11 +111,9 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
                 String[] splitValues = inputText.split(",|\\.");
 
                 if (splitValues != null) {
-                    for (String item : splitValues) {
-                        if (item.length() > 0) {
-                            //TODO mock , call APi to get Point
-                            //   adapter.addElement(new OrderModel(Integer.valueOf(item), pointsPath.get(adapter.getCount()).getLocation()));
-                        }
+                    for (final String item : splitValues) {
+                        getOrder(item);
+
                     }
                 }
                 invoiceInput.setText("");
@@ -125,9 +124,31 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
             public void onClick(View view) {
 
                 routeDetails.setVisibility(View.GONE);
-                adapter.updateDataset(new ArrayList<OrderModel>());
+                adapter.updateDataset(new ArrayList<Order>());
             }
         });
+    }
+
+    private void getOrder(final String invoiceNumber) {
+        if (invoiceNumber.length() > 0) {
+            ApiHelper.getInstance().getOrder(invoiceNumber, new Callback<Order>() {
+                @Override
+                public void onResponse(Response<Order> response, Retrofit retrofit) {
+                    if (response != null && response.body() != null) {
+                        adapter.addElement(response.body());
+                    }else {
+                        Toast.makeText(MainActivity.this, getString(R.string.order_not_found)
+                                + invoiceNumber, Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    Toast.makeText(MainActivity.this,  getString(R.string.order_not_found)
+                            + invoiceNumber, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
     /**
@@ -145,9 +166,9 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
      * @param model
      */
     @Override
-    public void onNavigateClicked(OrderModel model) {
-        double destinationLatitude = model.getLocation().latitude;
-        double destinationLongitude = model.getLocation().longitude;
+    public void onNavigateClicked(Order model) {
+        double destinationLatitude = model.getDeliveryAddress().getLocation().latitude;
+        double destinationLongitude = model.getDeliveryAddress().getLocation().longitude;
 
         String url = "http://maps.google.com/maps?f=d&daddr=" + destinationLatitude + "," + destinationLongitude + "&dirflg=d&layer=t";
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url));
@@ -194,10 +215,10 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
     private void getAllCombinations() {
         //Measure time of optimization
         startTime = System.currentTimeMillis();
-        for (OrderModel order : adapter.getDataset()) {
+        for (Order order : adapter.getDataset()) {
             Location location = new Location(String.valueOf(order.getInvoiceNumber()));
-            location.setLatitude(order.getLocation().latitude);
-            location.setLongitude(order.getLocation().longitude);
+            location.setLatitude(order.getDeliveryAddress().getLocation().latitude);
+            location.setLongitude(order.getDeliveryAddress().getLocation().longitude);
             locations.add(location);
         }
 
@@ -212,9 +233,9 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
         }
 
         //List from adapter
-        List<OrderModel> dataset = adapter.getDataset();
+        List<Order> dataset = adapter.getDataset();
         //New lists with sorted values
-        List<OrderModel> newDataset = new ArrayList<>(dataset.size());
+        List<Order> newDataset = new ArrayList<>(dataset.size());
         for (int point : currentPoints) {
             newDataset.add(dataset.get(point));
         }
@@ -245,15 +266,17 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
      *
      * @param orderModels
      */
-    private void getDistanceFromPath(List<OrderModel> orderModels) {
+    private void getDistanceFromPath(List<Order> orderModels) {
         StringBuilder url = new StringBuilder();
         url.append("https://maps.googleapis.com/maps/api/directions/json?");
         url.append("origin=" + currentUserLocation.getLatitude() + "," + currentUserLocation.getLongitude());
-        url.append("&destination=" + orderModels.get(orderModels.size() - 1).getLocation().latitude + "," + orderModels.get(orderModels.size() - 1).getLocation().longitude);
+        url.append("&destination=" + orderModels.get(orderModels.size() - 1).getDeliveryAddress().getLocation().latitude
+                + "," + orderModels.get(orderModels.size() - 1).getDeliveryAddress().getLocation().longitude);
         url.append("&waypoints=");//optimize:true
         //size()-1 because last point is set as destination
         for (int i = 0; i < orderModels.size() - 1; i++) {
-            url.append("|" + orderModels.get(i).getLocation().latitude + "," + orderModels.get(i).getLocation().longitude);
+            url.append("|" + orderModels.get(i).getDeliveryAddress().getLocation().latitude + ","
+                    + orderModels.get(i).getDeliveryAddress().getLocation().longitude);
         }
         url.append("&sensor=false&units=metric&mode=driving");  //&key="+getString(R.string.google_map_key));
         Log.i("getDistnanceFromPath " + orderModels.size(), url.toString());
