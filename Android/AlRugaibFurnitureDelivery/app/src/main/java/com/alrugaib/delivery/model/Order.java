@@ -2,7 +2,9 @@ package com.alrugaib.delivery.model;
 
 import com.google.gson.annotations.SerializedName;
 
-
+/**
+ * Model for getting an order from API
+ */
 public class Order {
 
     @SerializedName("DeviceId")

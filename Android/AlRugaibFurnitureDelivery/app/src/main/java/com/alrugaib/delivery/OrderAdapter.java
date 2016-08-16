@@ -83,7 +83,6 @@ public class OrderAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 callback.onNavigateClicked(dataset.get(position));
-                //row.setBackgroundColor(context.getColor(R.color.colorPrimary));
             }
         });
         row.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {

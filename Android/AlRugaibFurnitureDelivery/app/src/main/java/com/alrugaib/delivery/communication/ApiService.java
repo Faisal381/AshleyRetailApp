@@ -10,8 +10,9 @@ import retrofit.http.Query;
 import retrofit.http.Url;
 
 /**
- * Interface for Retrofit
+ * This class is a holder for all requests using Retrofit
  */
+
 public interface ApiService {
 
 

@@ -361,7 +361,9 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
 
     }
 
-
+    /**
+     * We need user location to calculate distance and provide navigation
+     */
     public void getCurrentUserLocation() {
         Criteria myCriteria = new Criteria();
         myCriteria.setAccuracy(Criteria.ACCURACY_COARSE);
@@ -408,7 +410,6 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        //
         switch (requestCode) {
             case PERMISSION_ACCESS_COARSE_LOCATION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

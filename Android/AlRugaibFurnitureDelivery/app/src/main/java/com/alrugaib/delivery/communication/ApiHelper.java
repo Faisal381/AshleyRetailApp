@@ -14,7 +14,9 @@ import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
-
+/**
+ * Retrofit Api Helper
+ */
 public class ApiHelper {
 
     private static ApiHelper instance;

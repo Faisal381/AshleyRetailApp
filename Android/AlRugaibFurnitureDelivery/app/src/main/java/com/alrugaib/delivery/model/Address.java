@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+/**
+ * Model of Address as part of Order model
+ */
 public class Address implements Serializable {
 
     @SerializedName("Id")
