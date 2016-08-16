@@ -5,7 +5,9 @@ import android.util.Patterns;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * Class with utils methods
+ */
 public class Util {
 
     /**

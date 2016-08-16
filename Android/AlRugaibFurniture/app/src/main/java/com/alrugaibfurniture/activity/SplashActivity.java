@@ -12,6 +12,9 @@ import com.alrugaibfurniture.util.PrefsHelper;
 
 import java.util.Locale;
 
+/**
+ * Activity with logo
+ */
 public class SplashActivity extends Activity {
 
     @Override
@@ -23,7 +26,9 @@ public class SplashActivity extends Activity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        //Start next screen on touch anywhere
+        /**
+         * Start next screen on touch anywhere
+         */
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
@@ -31,9 +36,11 @@ public class SplashActivity extends Activity {
         return true;
     }
 
-
+    /**
+     * set language on start from pref
+     * @param language
+     */
     private void setLanguage(String language) {
-        // set language on start from pref
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
         Resources resources = getResources();

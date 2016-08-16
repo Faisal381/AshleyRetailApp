@@ -42,9 +42,6 @@ public class LoginActivity extends Activity {
     TextView flagEnglish;
     @Bind(R.id.input_phone)
     EditText phoneInput;
-    @Bind(R.id.input_layout_phone)
-    TextInputLayout inputHint;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +71,9 @@ public class LoginActivity extends Activity {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     if (phoneInput.getText().length() >= 7 && phoneInput.getText().length() <= 12) {
                         ApiHelper.getInstance().login(phoneInput.getText().toString(), new Callback<CustomerProfile>() {
-
                             @Override
                             public void onResponse(Response<CustomerProfile> response, Retrofit retrofit) {
                                 Logger.logD("login", "onResponse");
-
                                 Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
                                 intent.putExtra(CustomerActivity.EXTRA_FROM_LOGIN, response.body());
                                 startActivity(intent);
@@ -114,7 +109,7 @@ public class LoginActivity extends Activity {
     }
 
     /**
-     * Set selected language
+     * Set selected language, restart activity to show new strings
      *
      * @param isEnglish true is english, false is arabic
      */

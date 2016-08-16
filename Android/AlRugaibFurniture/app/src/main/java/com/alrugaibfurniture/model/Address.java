@@ -12,9 +12,9 @@ public class Address implements Serializable {
     int id;
     @SerializedName("Name")
     String name;
-    @SerializedName("Lat")
+    @SerializedName("Lat") //Latitude
     double lat;
-    @SerializedName("Lon")
+    @SerializedName("Lon") //Longitude
     double lon;
 
     public Address(int id, String name, double lat, double lon){

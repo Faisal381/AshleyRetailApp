@@ -4,8 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-
-public class OrderRequest implements Serializable {
+/**
+ * Model for making order and receiving response
+ */
+public class Order implements Serializable {
 
     @SerializedName("DeviceId")
     private String deviceId;

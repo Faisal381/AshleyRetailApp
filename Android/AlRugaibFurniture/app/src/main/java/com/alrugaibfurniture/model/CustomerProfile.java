@@ -5,7 +5,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
+/**
+ * Model of Customer Profile
+ */
 public class CustomerProfile implements Serializable {
 
     @SerializedName("PhoneNumber")
@@ -17,7 +19,10 @@ public class CustomerProfile implements Serializable {
     @SerializedName("ContactAddresses")
     ArrayList<Address> contactAddresses;
 
-
+    /**
+     * Get lists of addresses
+     * @return
+     */
     public ArrayList<Address> getDeliveryAddresses() {
         return contactAddresses;
     }

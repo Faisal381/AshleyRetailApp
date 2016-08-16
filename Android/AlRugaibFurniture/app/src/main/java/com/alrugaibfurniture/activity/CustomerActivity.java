@@ -16,7 +16,7 @@ import com.alrugaibfurniture.R;
 import com.alrugaibfurniture.communication.ApiHelper;
 import com.alrugaibfurniture.model.Address;
 import com.alrugaibfurniture.model.CustomerProfile;
-import com.alrugaibfurniture.model.OrderRequest;
+import com.alrugaibfurniture.model.Order;
 import com.alrugaibfurniture.util.Logger;
 import com.alrugaibfurniture.util.Util;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,7 +27,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.squareup.okhttp.ResponseBody;
 
 import java.util.ArrayList;
 
@@ -342,7 +341,7 @@ public class CustomerActivity extends Activity {
     private void makeOrder(String value) {
         updateCurrentUser();
 
-        OrderRequest order = new OrderRequest();
+        Order order = new Order();
         order.setCustomerProfile(currentUser);
         order.setDeliveryAddress(new Address(currentAddressNumber, currentAddressNumber == 0 ?
                 firstName.getText().toString()
@@ -353,9 +352,9 @@ public class CustomerActivity extends Activity {
                 Settings.Secure.ANDROID_ID));
         order.setDeliveryAddressNumber(currentAddressNumber);
         order.setInvoiceNumber(value);
-        ApiHelper.getInstance().makeOrder(order, new Callback<OrderRequest>() {
+        ApiHelper.getInstance().makeOrder(order, new Callback<Order>() {
             @Override
-            public void onResponse(Response<OrderRequest> response, Retrofit retrofit) {
+            public void onResponse(Response<Order> response, Retrofit retrofit) {
                 Toast.makeText(CustomerActivity.this, R.string.order_done, Toast.LENGTH_LONG).show();
                 Intent a = new Intent(CustomerActivity.this, SplashActivity.class);
                 a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);

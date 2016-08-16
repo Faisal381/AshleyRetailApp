@@ -1,8 +1,7 @@
 package com.alrugaibfurniture.communication;
 
 import com.alrugaibfurniture.model.CustomerProfile;
-import com.alrugaibfurniture.model.OrderRequest;
-import com.squareup.okhttp.ResponseBody;
+import com.alrugaibfurniture.model.Order;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -21,5 +20,5 @@ public interface ApiService {
 
 
     @POST("api/Orders/PostOrderWithProfileUpdate")
-    Call<OrderRequest> postOrder(@Body OrderRequest model);
+    Call<Order> postOrder(@Body Order model);
 }
