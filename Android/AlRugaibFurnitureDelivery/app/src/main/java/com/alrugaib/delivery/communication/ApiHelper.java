@@ -15,7 +15,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 /**
- * Retrofit Api Helper
+ * Retrofit Api Helper, singleton that wraps requests into methods
  */
 public class ApiHelper {
 
@@ -25,7 +25,6 @@ public class ApiHelper {
     private static final int TIMEOUT = 10;//sec
 
     private ApiHelper() {
-
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         OkHttpClient httpClient = new OkHttpClient();
         httpClient.setReadTimeout(TIMEOUT, TimeUnit.SECONDS);
@@ -61,6 +60,8 @@ public class ApiHelper {
 
     /**
      * Singleton
+     *
+     * @return instance of ApiHelper
      */
     public static ApiHelper getInstance() {
         if (instance == null) {
@@ -69,6 +70,12 @@ public class ApiHelper {
         return instance;
     }
 
+    /**
+     * Get from API Order model from Invoice Number
+     *
+     * @param invoiceNumber - invoice number of order
+     * @param callback      callback to handle result
+     */
     public void getOrder(String invoiceNumber, Callback<Order> callback) {
         Call<Order> call = apiService.getOrder(invoiceNumber);
         call.enqueue(callback);
@@ -76,8 +83,9 @@ public class ApiHelper {
 
     /**
      * Get Google Directions from url with waypoints
-     * @param url
-     * @param callback
+     *
+     * @param url      - url created with waypoints
+     * @param callback callback to handle result
      */
     public void getDirections(String url, Callback<ResponseBody> callback) {
         Call<ResponseBody> call = googleService.getDirections(url);

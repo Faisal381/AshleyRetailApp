@@ -16,11 +16,11 @@ public class Address implements Serializable {
     @SerializedName("Name")
     String name;
     @SerializedName("Lat")
-    double lat;
+    double lat; //Latitude
     @SerializedName("Lon")
-    double lon;
+    double lon; //Longitude
 
-    public Address(int id, String name, double lat, double lon){
+    public Address(int id, String name, double lat, double lon) {
         this.id = id;
         this.name = name;
         this.lat = lat;
@@ -43,7 +43,7 @@ public class Address implements Serializable {
         return name;
     }
 
-    public LatLng getLocation(){
-        return new LatLng(lat,lon);
+    public LatLng getLocation() {
+        return new LatLng(lat, lon);
     }
 }

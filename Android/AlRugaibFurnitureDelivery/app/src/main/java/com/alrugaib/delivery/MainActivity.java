@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,9 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
+/**
+ * Main Activity of application with routes and distance/time calculations
+ */
 public class MainActivity extends AppCompatActivity implements OrderAdapter.AdapterCallback {
 
 
@@ -48,9 +52,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
     private Location currentUserLocation;
     private double currentShortestDistance = 0;
     private List<Integer> currentPoints;
-    private long startTime;
     private OrderAdapter adapter;
-    private ListView list;
     private EditText invoiceInput;
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -136,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
                 public void onResponse(Response<Order> response, Retrofit retrofit) {
                     if (response != null && response.body() != null) {
                         adapter.addElement(response.body());
-                    }else {
+                    } else {
                         Toast.makeText(MainActivity.this, getString(R.string.order_not_found)
                                 + invoiceNumber, Toast.LENGTH_LONG).show();
                     }
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
 
                 @Override
                 public void onFailure(Throwable t) {
-                    Toast.makeText(MainActivity.this,  getString(R.string.order_not_found)
+                    Toast.makeText(MainActivity.this, getString(R.string.order_not_found)
                             + invoiceNumber, Toast.LENGTH_LONG).show();
                 }
             });
@@ -155,16 +157,12 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
      * init list with empty adapter list
      */
     private void initList() {
-        list = (ListView) findViewById(R.id.main_list);
+        ListView list = (ListView) findViewById(R.id.main_list);
         adapter = new OrderAdapter(this);
         list.setAdapter(adapter);
     }
 
-    /**
-     * On navigation icon clicked inside list item
-     *
-     * @param model
-     */
+
     @Override
     public void onNavigateClicked(Order model) {
         double destinationLatitude = model.getDeliveryAddress().getLocation().latitude;
@@ -182,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
         routeDetails.setVisibility(View.GONE);
     }
 
-    public <T> Collection<List<T>> generatePermutationsNoRepetition(Set<T> availableNumbers) {
+    private <T> Collection<List<T>> generatePermutationsNoRepetition(Set<T> availableNumbers) {
         Collection<List<T>> permutations = new HashSet<>();
 
         for (T number : availableNumbers) {
@@ -214,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
      */
     private void getAllCombinations() {
         //Measure time of optimization
-        startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         for (Order order : adapter.getDataset()) {
             Location location = new Location(String.valueOf(order.getInvoiceNumber()));
             location.setLatitude(order.getDeliveryAddress().getLocation().latitude);
@@ -264,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
     /**
      * Method calling maps directions to measure the distance and duration via routes
      *
-     * @param orderModels
+     * @param orderModels - sorted order list to get distance from it
      */
     private void getDistanceFromPath(List<Order> orderModels) {
         StringBuilder url = new StringBuilder();
@@ -279,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
                     + orderModels.get(i).getDeliveryAddress().getLocation().longitude);
         }
         url.append("&sensor=false&units=metric&mode=driving");  //&key="+getString(R.string.google_map_key));
-        Log.i("getDistnanceFromPath " + orderModels.size(), url.toString());
+        Log.i("getDistanceFromPath " + orderModels.size(), url.toString());
         ApiHelper.getInstance().getDirections(url.toString(), new Callback<ResponseBody>() {
 
             @Override

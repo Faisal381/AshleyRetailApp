@@ -20,18 +20,22 @@ public class OrderAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private AdapterCallback callback;
     private boolean isSorted = false;
-    private Context context;
 
+    /**
+     * Constructor
+     *
+     * @param context - context for inflater
+     */
     public OrderAdapter(Context context) {
         dataset = new ArrayList<>();
-        this.context = context;
         callback = (AdapterCallback) context;
         inflater = LayoutInflater.from(context);
     }
 
     /**
      * Add element to dataset , mark is as not sorted anymore
-     * @param element
+     *
+     * @param element - Order to add to list
      */
     public void addElement(Order element) {
         dataset.add(element);
@@ -41,7 +45,8 @@ public class OrderAdapter extends BaseAdapter {
 
     /**
      * Change dataset to new one
-     * @param newDataset
+     *
+     * @param newDataset - new list to replace adapter dataset with
      */
     public void updateDataset(List<Order> newDataset) {
         dataset = newDataset;
@@ -49,6 +54,11 @@ public class OrderAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Getter for dataset list
+     *
+     * @return list of orders that is currently dataset of adapter
+     */
     public List<Order> getDataset() {
         return dataset;
     }
@@ -100,8 +110,18 @@ public class OrderAdapter extends BaseAdapter {
      * Callback interface to provide communication with top layer
      */
     public interface AdapterCallback {
+        /**
+         * On navigation icon clicked inside list item
+         *
+         * @param model - model of order that has been clicked on list
+         */
         void onNavigateClicked(Order model);
 
+        /**
+         * Method notifying container that item has been removed
+         *
+         * @param position - position of removed item
+         */
         void onItemRemoved(int position);
     }
 }
