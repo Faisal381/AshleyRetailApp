@@ -9,6 +9,11 @@ public class FurnitureApplication extends Application {
 
     private static FurnitureApplication instance;
 
+    /**
+     * Method retrieving Application singleton object
+     *
+     * @return singleton instance
+     */
     public static FurnitureApplication getInstance() {
         return instance;
     }

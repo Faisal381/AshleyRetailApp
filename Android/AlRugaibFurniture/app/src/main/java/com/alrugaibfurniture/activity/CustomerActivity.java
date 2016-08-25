@@ -37,7 +37,9 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-
+/**
+ * Activity with customer profile (fill/edit) for making order
+ */
 public class CustomerActivity extends Activity {
 
     public static final String EXTRA_FROM_LOGIN = "extra_user";
@@ -57,8 +59,8 @@ public class CustomerActivity extends Activity {
     @Bind(R.id.third_address)
     EditText thirdName;
 
-    @Bind(R.id.map_choosen)
-    MapView mapChoosen;
+    @Bind(R.id.map_chosen)
+    MapView mapChosen;
     @Bind(R.id.map_first)
     MapView mapFirst;
     @Bind(R.id.map_second)
@@ -107,14 +109,12 @@ public class CustomerActivity extends Activity {
         }
     }
 
-    /**
-     * Init maps and listeners
-     *
-     * @param savedInstanceState
-     */
     private void initMaps(Bundle savedInstanceState) {
-        mapChoosen.onCreate(savedInstanceState);
-        mapChoosen.getMapAsync(new OnMapReadyCallback() {
+        /**
+         * Init maps and listeners
+         */
+        mapChosen.onCreate(savedInstanceState);
+        mapChosen.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 current = googleMap;
@@ -142,7 +142,7 @@ public class CustomerActivity extends Activity {
                     @Override
                     public void onMapClick(LatLng latLng) {
                         updateCurrentMarker(firstMarker, 0);
-                        setBorderToChoosenMap(0);
+                        setBorderToChosenMap(0);
                     }
                 });
                 first.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -157,7 +157,7 @@ public class CustomerActivity extends Activity {
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                         }
                         updateCurrentMarker(firstMarker, 0);
-                        setBorderToChoosenMap(0);
+                        setBorderToChosenMap(0);
                     }
                 });
             }
@@ -183,7 +183,7 @@ public class CustomerActivity extends Activity {
                     @Override
                     public void onMapClick(LatLng latLng) {
                         updateCurrentMarker(secondMarker, 1);
-                        setBorderToChoosenMap(1);
+                        setBorderToChosenMap(1);
                     }
                 });
                 second.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -198,7 +198,7 @@ public class CustomerActivity extends Activity {
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                         }
                         updateCurrentMarker(secondMarker, 1);
-                        setBorderToChoosenMap(1);
+                        setBorderToChosenMap(1);
                     }
                 });
             }
@@ -223,7 +223,7 @@ public class CustomerActivity extends Activity {
                     @Override
                     public void onMapClick(LatLng latLng) {
                         updateCurrentMarker(thirdMarker, 2);
-                        setBorderToChoosenMap(2);
+                        setBorderToChosenMap(2);
                     }
                 });
                 third.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -238,7 +238,7 @@ public class CustomerActivity extends Activity {
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                         }
                         updateCurrentMarker(thirdMarker, 2);
-                        setBorderToChoosenMap(2);
+                        setBorderToChosenMap(2);
                     }
                 });
             }
@@ -282,12 +282,15 @@ public class CustomerActivity extends Activity {
         }
     }
 
-    private void setBorderToChoosenMap(int which) {
+    private void setBorderToChosenMap(int which) {
         mapFirst.setBackground(which == 0 ? getDrawable(R.drawable.flag_background_border) : null);
         mapSecond.setBackground(which == 1 ? getDrawable(R.drawable.flag_background_border) : null);
         mapThird.setBackground(which == 2 ? getDrawable(R.drawable.flag_background_border) : null);
     }
 
+    /**
+     * Method called when R.id.submit_button is clicked
+     */
     @OnClick(R.id.submit_button)
     void onSubmitClicked() {
         final String validMsg = validInput();
@@ -393,7 +396,7 @@ public class CustomerActivity extends Activity {
     /**
      * Method validating input values when submitting
      *
-     * @return
+     * @return message to display from validation
      */
     private String validInput() {
         boolean isValid = true;
@@ -433,7 +436,7 @@ public class CustomerActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        mapChoosen.onResume();
+        mapChosen.onResume();
         mapFirst.onResume();
         mapSecond.onResume();
         mapThird.onResume();
@@ -441,7 +444,7 @@ public class CustomerActivity extends Activity {
 
     @Override
     protected void onPause() {
-        mapChoosen.onPause();
+        mapChosen.onPause();
         mapFirst.onPause();
         mapSecond.onPause();
         mapThird.onPause();
@@ -450,7 +453,7 @@ public class CustomerActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        mapChoosen.onDestroy();
+        mapChosen.onDestroy();
         mapFirst.onDestroy();
         mapSecond.onDestroy();
         mapThird.onDestroy();
@@ -460,7 +463,7 @@ public class CustomerActivity extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapChoosen.onSaveInstanceState(outState);
+        mapChosen.onSaveInstanceState(outState);
         mapFirst.onSaveInstanceState(outState);
         mapSecond.onSaveInstanceState(outState);
         mapThird.onSaveInstanceState(outState);

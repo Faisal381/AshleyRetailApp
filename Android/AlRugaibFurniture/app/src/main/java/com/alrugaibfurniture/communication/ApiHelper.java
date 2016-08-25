@@ -15,7 +15,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 /**
- * Retrofit Api Helper
+ * Retrofit Api Helper, singleton that wraps requests into methods
  */
 public class ApiHelper {
 
@@ -23,8 +23,8 @@ public class ApiHelper {
     private final ApiService apiService;
     private static final int TIMEOUT = 10;//sec
 
-    private ApiHelper() {
 
+    private ApiHelper() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         OkHttpClient httpClient = new OkHttpClient();
         httpClient.setReadTimeout(TIMEOUT, TimeUnit.SECONDS);
@@ -37,7 +37,7 @@ public class ApiHelper {
         }
 
         /*
-         * Create a service to make authed requests to the api
+         * Create a service to make requests to the api
          */
         Retrofit builder = new Retrofit.Builder()
                 .baseUrl("http://furnituredeliverydemo.azurewebsites.net/")
@@ -51,7 +51,7 @@ public class ApiHelper {
     /**
      * Singleton
      *
-     * @return isntace of ApiHelper
+     * @return instance of ApiHelper
      */
     public static ApiHelper getInstance() {
         if (instance == null) {
@@ -64,13 +64,20 @@ public class ApiHelper {
     /**
      * Send API request to check if number is in Database
      *
-     * @param phoneNumber
+     * @param phoneNumber - phone number of customer
+     * @param callback    callback to handle result
      */
     public void login(String phoneNumber, Callback<CustomerProfile> callback) {
         Call<CustomerProfile> call = apiService.login(phoneNumber);
         call.enqueue(callback);
     }
 
+    /**
+     * Submit request to API with all user information in Order model
+     *
+     * @param orderRequest model with all data of making order
+     * @param callback     callback to handle result
+     */
     public void makeOrder(Order orderRequest, Callback<Order> callback) {
         Call<Order> call = apiService.postOrder(orderRequest);
         call.enqueue(callback);

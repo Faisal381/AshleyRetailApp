@@ -13,7 +13,7 @@ import com.alrugaibfurniture.util.PrefsHelper;
 import java.util.Locale;
 
 /**
- * Activity with logo
+ * Activity with logo on start
  */
 public class SplashActivity extends Activity {
 
@@ -38,7 +38,8 @@ public class SplashActivity extends Activity {
 
     /**
      * set language on start from pref
-     * @param language
+     *
+     * @param language - language to set
      */
     private void setLanguage(String language) {
         Locale locale = new Locale(language);

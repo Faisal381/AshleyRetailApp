@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -98,11 +97,17 @@ public class LoginActivity extends Activity {
         });
     }
 
+    /**
+     * Method called when R.id.flag_arabic is clicked
+     */
     @OnClick(R.id.flag_arabic)
     void onArabicFlagClicked() {
         changeBorderAndSetLanguage(false);
     }
 
+    /**
+     * Method called when R.id.flag_english is clicked
+     */
     @OnClick(R.id.flag_english)
     void onEnglishFlagClicked() {
         changeBorderAndSetLanguage(true);
@@ -126,7 +131,7 @@ public class LoginActivity extends Activity {
     /**
      * Update view with new language
      *
-     * @param language
+     * @param language - language to set
      */
     private void updateResources(String language) {
         Locale locale = new Locale(language);

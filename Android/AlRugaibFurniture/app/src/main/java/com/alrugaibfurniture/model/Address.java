@@ -6,18 +6,21 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+/**
+ * Address model from API
+ */
 public class Address implements Serializable {
 
     @SerializedName("Id")
     int id;
     @SerializedName("Name")
     String name;
-    @SerializedName("Lat") //Latitude
-    double lat;
-    @SerializedName("Lon") //Longitude
-    double lon;
+    @SerializedName("Lat")
+    double lat; //Latitude
+    @SerializedName("Lon")
+    double lon; //Longitude
 
-    public Address(int id, String name, double lat, double lon){
+    public Address(int id, String name, double lat, double lon) {
         this.id = id;
         this.name = name;
         this.lat = lat;
@@ -40,7 +43,7 @@ public class Address implements Serializable {
         return name;
     }
 
-    public LatLng getLocation(){
-        return new LatLng(lat,lon);
+    public LatLng getLocation() {
+        return new LatLng(lat, lon);
     }
 }

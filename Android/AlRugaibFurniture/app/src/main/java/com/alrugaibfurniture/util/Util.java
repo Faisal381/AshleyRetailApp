@@ -13,8 +13,8 @@ public class Util {
     /**
      * Method validating email with regex
      *
-     * @param email
-     * @return
+     * @param email - email to validate
+     * @return true if email is valid , false if not
      */
     public static boolean isEmailValid(String email) {
         boolean isValid = false;
@@ -32,6 +32,9 @@ public class Util {
 
     /**
      * Method validating phone number
+     *
+     * @param number - phone number to validate
+     * @return true if email is valid , false if not
      */
     public static boolean validCellPhone(String number) {
         return Patterns.PHONE.matcher(number).matches();

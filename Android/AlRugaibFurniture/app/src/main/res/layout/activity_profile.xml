@@ -15,6 +15,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/logo" />
@@ -100,7 +101,7 @@
 
 
         <com.google.android.gms.maps.MapView
-            android:id="@+id/map_choosen"
+            android:id="@+id/map_chosen"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="8dp" />

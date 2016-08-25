@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Model of Customer Profile
+ * Model of Customer Profile from API
  */
 public class CustomerProfile implements Serializable {
 
@@ -21,7 +21,8 @@ public class CustomerProfile implements Serializable {
 
     /**
      * Get lists of addresses
-     * @return
+     *
+     * @return addresses of user
      */
     public ArrayList<Address> getDeliveryAddresses() {
         return contactAddresses;
