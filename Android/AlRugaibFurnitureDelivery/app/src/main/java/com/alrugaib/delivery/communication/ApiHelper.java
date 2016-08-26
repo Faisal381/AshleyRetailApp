@@ -40,7 +40,8 @@ public class ApiHelper {
          * Create a service to make API requests
          */
         Retrofit builder = new Retrofit.Builder()
-                .baseUrl("http://furnituredeliverydemo.azurewebsites.net")
+               // .baseUrl("http://furnituredeliverydemo.azurewebsites.net")
+                .baseUrl("http://ashley-api.azurewebsites.net")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();
