@@ -52,3 +52,4 @@ D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Debug
 D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Debug\FurnitureDelivery.Migrations.Initial5.resources
 D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Debug\FurnitureDelivery.Migrations.Initial6.resources
 D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Debug\FurnitureDelivery.Migrations.Initial7.resources
+D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Debug\FurnitureDelivery.Migrations.initial9.resources

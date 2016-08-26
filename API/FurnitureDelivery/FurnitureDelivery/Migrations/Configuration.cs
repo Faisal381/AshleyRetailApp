@@ -55,6 +55,7 @@ namespace FurnitureDelivery.Migrations
         /// <param name="context"></param>
         protected override void Seed(FurnitureDelivery.Models.FurnitureDeliveryContext context)
         {
+#if Debug
 
             var prof1 = new CustomerProfile { FullName = "Profile 1", Email = "p1@aim.co", PhoneNumber = "123456789", ContactAddresses = list1 };
             var prof2 = new CustomerProfile { FullName = "Profile 2", Email = "p2@aim.co", PhoneNumber = "223456789", ContactAddresses = list2 };
@@ -79,7 +80,7 @@ namespace FurnitureDelivery.Migrations
 
             Order o1 = new Order
             {
-                InvoiceNumber = "123",
+                InvoiceNumber = "WW123",
                 DeliveryAddress = list1[0],
                 CustomerProfile = prof1
 
@@ -87,7 +88,7 @@ namespace FurnitureDelivery.Migrations
 
             Order o2 = new Order
             {
-                InvoiceNumber = "222",
+                InvoiceNumber = "WW222",
                 DeliveryAddress = list1[0],
                 CustomerProfile = prof1
 
@@ -95,7 +96,7 @@ namespace FurnitureDelivery.Migrations
 
             Order o3 = new Order
             {
-                InvoiceNumber = "555",
+                InvoiceNumber = "WW555",
                 DeliveryAddress = list1[0],
                 CustomerProfile = prof1
 
@@ -104,16 +105,17 @@ namespace FurnitureDelivery.Migrations
             context.Orders.AddOrUpdate(x => x.Id, o1, o2, o3 );
 
 
-            DeliveryLog dl = new DeliveryLog
-            {
-                Timestamp = "0",
-                Action = "Log",
-                DeviceId = "123"
+            //DeliveryLog dl = new DeliveryLog
+            //{
+            //    Timestamp = "0",
+            //    Action = "Log",
+            //    DeviceId = "123"
 
-            };
-            context.DeliveryLogs.AddOrUpdate(x => x.Id, dl);
+            //};
+            //context.DeliveryLogs.AddOrUpdate(x => x.Id, dl);
             //todo add addresses
 
+#endif
         }
 
 

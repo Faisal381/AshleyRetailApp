@@ -44,3 +44,10 @@ D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Relea
 D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Release\FurnitureDelivery.csproj.GenerateResource.Cache
 D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Release\FurnitureDelivery.dll
 D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Release\FurnitureDelivery.pdb
+D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Release\FurnitureDelivery.Migrations.Initial2.resources
+D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Release\FurnitureDelivery.Migrations.Initial3.resources
+D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Release\FurnitureDelivery.Migrations.Initial4.resources
+D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Release\FurnitureDelivery.Migrations.Initial5.resources
+D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Release\FurnitureDelivery.Migrations.Initial6.resources
+D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Release\FurnitureDelivery.Migrations.Initial7.resources
+D:\aim_api\FurnitureDeliveryWebApi\FurnitureDelivery\FurnitureDelivery\obj\Release\FurnitureDelivery.Migrations.initial9.resources

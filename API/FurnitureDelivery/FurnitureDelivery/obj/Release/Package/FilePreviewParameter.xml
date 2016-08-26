@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="ashley-api" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^D:\\aim_api\\FurnitureDeliveryWebApi\\FurnitureDelivery\\FurnitureDelivery\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^D:\\aim_api\\FurnitureDeliveryWebApi\\FurnitureDelivery\\FurnitureDelivery\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="Add write permission to App_Data Folder" description="Add write permission to App_Data folder" value="ashley-api/App_Data" tags="Hidden">
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^D:\\aim_api\\FurnitureDeliveryWebApi\\FurnitureDelivery\\FurnitureDelivery\\obj\\Release\\Package\\PackageTmp\\App_Data$" />
+  </parameter>
+  <parameter name="FurnitureDeliveryContext-Web.config Connection String" description="" value="Server=tcp:ashley-server.database.windows.net,1433;Initial Catalog=ashley-live;            Persist Security Info=False;User ID=ashley-server;Password=liveUser123!;            MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30" tags="">
+    <parameterEntry kind="XmlFile" scope="D:\\aim_api\\FurnitureDeliveryWebApi\\FurnitureDelivery\\FurnitureDelivery\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='FurnitureDeliveryContext']/@connectionString" />
+  </parameter>
+</parameters>

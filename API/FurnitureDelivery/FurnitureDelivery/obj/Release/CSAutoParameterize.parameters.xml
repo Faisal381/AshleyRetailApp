@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
-  <parameter name="FurnitureDeliveryContext-Web.config Connection String" description="FurnitureDeliveryContext Connection String used in web.config by the application to access the database." defaultValue="Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=FurnitureDeliveryContext-20160730130019; Integrated Security=True; MultipleActiveResultSets=True; AttachDbFilename=|DataDirectory|FurnitureDeliveryContext-20160730130019.mdf" tags="SqlConnectionString">
+  <parameter name="FurnitureDeliveryContext-Web.config Connection String" description="FurnitureDeliveryContext Connection String used in web.config by the application to access the database." defaultValue="Data Source=tcp:furnituredeliverydemo.database.windows.net,1433;Initial Catalog=FurnitureDeliveryDemo;Persist Security Info=False;User ID=deliverydemo;Password=furniture123!;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False" tags="SqlConnectionString">
     <parameterEntry kind="XmlFile" scope="D:\\aim_api\\FurnitureDeliveryWebApi\\FurnitureDelivery\\FurnitureDelivery\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='FurnitureDeliveryContext']/@connectionString" />
+  </parameter>
+  <parameter name="FurnitureDeliveryContext_DatabasePublish-Web.config Connection String" description="FurnitureDeliveryContext_DatabasePublish Connection String used in web.config by the application to access the database." defaultValue="FurnitureDeliveryContext_DatabasePublish.ConnetionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\aim_api\\FurnitureDeliveryWebApi\\FurnitureDelivery\\FurnitureDelivery\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='FurnitureDeliveryContext_DatabasePublish']/@connectionString" />
   </parameter>
 </parameters>

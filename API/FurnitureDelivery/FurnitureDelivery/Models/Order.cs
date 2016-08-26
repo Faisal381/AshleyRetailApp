@@ -26,6 +26,9 @@ namespace FurnitureDelivery.Models
         /// Invoice number, also known as Order number
         /// </summary>
         [Required]
+        [MinLength(4)]
+        [MaxLength(8)]
+        [RegularExpression("([A-Z a-z]{2})[0-9]{2,6}")]
         public String InvoiceNumber { get; set; }
 
         /// <summary>

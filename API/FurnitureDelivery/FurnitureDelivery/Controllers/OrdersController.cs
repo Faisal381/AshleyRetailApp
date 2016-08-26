@@ -105,6 +105,12 @@ namespace FurnitureDelivery.Controllers
             else
             {
                 order.Id = existingOrder.Id;
+                // different customer id so new person want to override the the order
+                if (existingOrder.CustomerProfileId != order.CustomerProfileId)
+                {
+                    return BadRequest("This order doesn't belong to you!");
+                }
+
                 db.Entry(existingOrder).CurrentValues.SetValues(order);
             }
 

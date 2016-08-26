@@ -190,6 +190,10 @@
     <Compile Include="Migrations\201608110746596_Initial7.Designer.cs">
       <DependentUpon>201608110746596_Initial7.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608260846112_initial9.cs" />
+    <Compile Include="Migrations\201608260846112_initial9.Designer.cs">
+      <DependentUpon>201608260846112_initial9.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CustomerAddress.cs" />
     <Compile Include="Models\Order.cs" />
@@ -220,6 +224,10 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <None Include="Properties\PublishProfiles\ashley-api - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\ashley-api - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ashley-api - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\ashley-api - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\FurnitureDeliveryDemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\FurnitureDeliveryDemo - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
@@ -251,6 +259,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608110746596_Initial7.resx">
       <DependentUpon>201608110746596_Initial7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608260846112_initial9.resx">
+      <DependentUpon>201608260846112_initial9.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
