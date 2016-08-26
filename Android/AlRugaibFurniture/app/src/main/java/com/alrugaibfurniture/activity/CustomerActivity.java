@@ -345,6 +345,7 @@ public class CustomerActivity extends Activity {
         updateCurrentUser();
 
         Order order = new Order();
+
         order.setCustomerProfile(currentUser);
         order.setDeliveryAddress(new Address(currentAddressNumber, currentAddressNumber == 0 ?
                 firstName.getText().toString()
@@ -379,15 +380,15 @@ public class CustomerActivity extends Activity {
         //update current user
         ArrayList<Address> addresses = new ArrayList<>(3);
         if (firstMarker != null) {
-            addresses.add(new Address(0, "First address",
+            addresses.add(new Address(0, firstName.getText().toString(),
                     firstMarker.getPosition().latitude, firstMarker.getPosition().longitude));
         }
         if (secondMarker != null) {
-            addresses.add(new Address(1, "Second address",
+            addresses.add(new Address(1, secondName.getText().toString(),
                     secondMarker.getPosition().latitude, secondMarker.getPosition().longitude));
         }
         if (thirdMarker != null) {
-            addresses.add(new Address(2, "Third address",
+            addresses.add(new Address(2, thirdName.getText().toString(),
                     thirdMarker.getPosition().latitude, thirdMarker.getPosition().longitude));
         }
         currentUser.setContactAddresses(addresses);

@@ -29,6 +29,6 @@ public interface ApiService {
      * @param model - order model
      * @return order model to validate in debug mode
      */
-    @POST("api/Orders/PostOrderWithProfileUpdate")
+    @POST("/api/Orders/PostOrderWithProfileUpdate")
     Call<Order> postOrder(@Body Order model);
 }
