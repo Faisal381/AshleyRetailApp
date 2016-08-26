@@ -9,33 +9,16 @@ import com.alrugaibfurniture.BuildConfig;
  * In this class should be added future Crashlytics logs if We ever add it.
  */
 public class Logger {
+
+    /**
+     * Log wrapper for Debug option
+     *
+     * @param tag     tag for log
+     * @param message message of log
+     */
     public static void logD(final String tag, String message) {
         if (BuildConfig.DEBUG) {
             Log.d(tag, message);
-        }
-    }
-
-    public static void logV(final String tag, String message) {
-        if (BuildConfig.DEBUG) {
-            Log.v(tag, message);
-        }
-    }
-
-    public static void logI(final String tag, String message) {
-        if (BuildConfig.DEBUG) {
-            Log.i(tag, message);
-        }
-    }
-
-    public static void logW(final String tag, String message) {
-        if (BuildConfig.DEBUG) {
-            Log.w(tag, message);
-        }
-    }
-
-    public static void logE(final String tag, String message) {
-        if (BuildConfig.DEBUG) {
-            Log.e(tag, message);
         }
     }
 }

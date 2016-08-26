@@ -12,8 +12,6 @@
     <string name="delivery_address">Delivery Address</string>
     <string name="saved_addresses">Saved Addresses</string>
 
-
-
     <string name="confirmation">Confirmation</string>
     <string name="information_incomplete">Following information are incomplete</string>
     <string name="sure_to_submit">"Are you sure you want submit order to: "</string>
@@ -26,5 +24,14 @@
     <string name="input_phone">Please input phone number</string>
     <string name="phone_to_short">Phone number is to short</string>
     <string name="phone_to_long">Phone number is to long</string>
+    <string name="invoice_number">Invoice Number</string>
+    <string name="order_done">Thank You, come again!</string>
+    <string name="first_address">First Address</string>
+    <string name="second_address">Second Address</string>
+    <string name="third_address">Third Address</string>
+    <string name="error_msg">Something went wrong</string>
+    <string name="invoice_above_restriction">Invoice Number length has to be above 3 chars</string>
+    <string name="invoice_below_restriction">Invoice Number length has to be below 9 chars</string>
+    <string name="wrong_invoice">Wrong Invoice Number!</string>
 
 </resources>

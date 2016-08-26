@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.alrugaib.delivery.model.Order;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,24 +16,28 @@ import java.util.List;
  * Adapter for order list
  */
 public class OrderAdapter extends BaseAdapter {
-    private List<OrderModel> dataset;
+    private List<Order> dataset;
     private LayoutInflater inflater;
     private AdapterCallback callback;
     private boolean isSorted = false;
-    private Context context;
 
+    /**
+     * Constructor
+     *
+     * @param context - context for inflater
+     */
     public OrderAdapter(Context context) {
         dataset = new ArrayList<>();
-        this.context = context;
         callback = (AdapterCallback) context;
         inflater = LayoutInflater.from(context);
     }
 
     /**
      * Add element to dataset , mark is as not sorted anymore
-     * @param element
+     *
+     * @param element - Order to add to list
      */
-    public void addElement(OrderModel element) {
+    public void addElement(Order element) {
         dataset.add(element);
         isSorted = false;
         notifyDataSetChanged();
@@ -39,15 +45,21 @@ public class OrderAdapter extends BaseAdapter {
 
     /**
      * Change dataset to new one
-     * @param newDataset
+     *
+     * @param newDataset - new list to replace adapter dataset with
      */
-    public void updateDataset(List<OrderModel> newDataset) {
+    public void updateDataset(List<Order> newDataset) {
         dataset = newDataset;
         isSorted = true;
         notifyDataSetChanged();
     }
 
-    public List<OrderModel> getDataset() {
+    /**
+     * Getter for dataset list
+     *
+     * @return list of orders that is currently dataset of adapter
+     */
+    public List<Order> getDataset() {
         return dataset;
     }
 
@@ -61,13 +73,13 @@ public class OrderAdapter extends BaseAdapter {
     }
 
     @Override
-    public OrderModel getItem(int position) {
+    public Order getItem(int position) {
         return dataset.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return dataset.get(position).getInvoiceNumber();
+        return 0;
     }
 
     @Override
@@ -81,7 +93,6 @@ public class OrderAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 callback.onNavigateClicked(dataset.get(position));
-                //row.setBackgroundColor(context.getColor(R.color.colorPrimary));
             }
         });
         row.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
@@ -99,8 +110,18 @@ public class OrderAdapter extends BaseAdapter {
      * Callback interface to provide communication with top layer
      */
     public interface AdapterCallback {
-        void onNavigateClicked(OrderModel model);
+        /**
+         * On navigation icon clicked inside list item
+         *
+         * @param model - model of order that has been clicked on list
+         */
+        void onNavigateClicked(Order model);
 
+        /**
+         * Method notifying container that item has been removed
+         *
+         * @param position - position of removed item
+         */
         void onItemRemoved(int position);
     }
 }

@@ -16,14 +16,27 @@ public class PrefsHelper {
 
     private static final String SHARED_PREVIOUS_LANGUAGE = SHARED_PREFERENCES + ".PreviousLanguage";
 
+    /**
+     * Method for debug purpose to clear preferences of app
+     */
     public static void clearPrefs() {
         sSharedPreferences.edit().clear().commit();
     }
 
+    /**
+     * Get from SharedPreferences current language
+     *
+     * @return true if current language is english, false if current language is Arabic
+     */
     public static boolean isEnglishLanguage() {
         return sSharedPreferences.getBoolean(SHARED_PREVIOUS_LANGUAGE, true);
     }
 
+    /**
+     * Set in SharedPreferences current language (as flag)
+     *
+     * @param isEnglish true if current language is english, false if current language is Arabic
+     */
     public static void setLanguage(boolean isEnglish) {
         sSharedPreferences.edit().putBoolean(SHARED_PREVIOUS_LANGUAGE, isEnglish).apply();
     }

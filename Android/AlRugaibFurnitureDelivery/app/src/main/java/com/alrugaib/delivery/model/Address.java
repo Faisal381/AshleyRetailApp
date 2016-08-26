@@ -1,4 +1,4 @@
-package com.alrugaibfurniture.model;
+package com.alrugaib.delivery.model;
 
 
 import com.google.android.gms.maps.model.LatLng;
@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Address model from API
+ * Model of Address as part of Order model
  */
 public class Address implements Serializable {
 

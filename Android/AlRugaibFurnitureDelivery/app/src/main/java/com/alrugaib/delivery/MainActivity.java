@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alrugaib.delivery.communication.ApiHelper;
+import com.alrugaib.delivery.model.Order;
 import com.squareup.okhttp.ResponseBody;
 
 import org.json.JSONArray;
@@ -37,6 +39,9 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
+/**
+ * Main Activity of application with routes and distance/time calculations
+ */
 public class MainActivity extends AppCompatActivity implements OrderAdapter.AdapterCallback {
 
 
@@ -47,9 +52,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
     private Location currentUserLocation;
     private double currentShortestDistance = 0;
     private List<Integer> currentPoints;
-    private long startTime;
     private OrderAdapter adapter;
-    private ListView list;
     private EditText invoiceInput;
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -110,11 +113,9 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
                 String[] splitValues = inputText.split(",|\\.");
 
                 if (splitValues != null) {
-                    for (String item : splitValues) {
-                        if (item.length() > 0) {
-                            //TODO mock , call APi to get Point
-                            //   adapter.addElement(new OrderModel(Integer.valueOf(item), pointsPath.get(adapter.getCount()).getLocation()));
-                        }
+                    for (final String item : splitValues) {
+                        getOrder(item);
+
                     }
                 }
                 invoiceInput.setText("");
@@ -125,29 +126,47 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
             public void onClick(View view) {
 
                 routeDetails.setVisibility(View.GONE);
-                adapter.updateDataset(new ArrayList<OrderModel>());
+                adapter.updateDataset(new ArrayList<Order>());
             }
         });
+    }
+
+    private void getOrder(final String invoiceNumber) {
+        if (invoiceNumber.length() > 0) {
+            ApiHelper.getInstance().getOrder(invoiceNumber, new Callback<Order>() {
+                @Override
+                public void onResponse(Response<Order> response, Retrofit retrofit) {
+                    if (response.code() == 200 && response != null && response.body() != null) {
+                        adapter.addElement(response.body());
+                    } else {
+                        Toast.makeText(MainActivity.this, getString(R.string.order_not_found)
+                                + invoiceNumber, Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    Toast.makeText(MainActivity.this, getString(R.string.order_not_found)
+                            + invoiceNumber, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
     /**
      * init list with empty adapter list
      */
     private void initList() {
-        list = (ListView) findViewById(R.id.main_list);
+        ListView list = (ListView) findViewById(R.id.main_list);
         adapter = new OrderAdapter(this);
         list.setAdapter(adapter);
     }
 
-    /**
-     * On navigation icon clicked inside list item
-     *
-     * @param model
-     */
+
     @Override
-    public void onNavigateClicked(OrderModel model) {
-        double destinationLatitude = model.getLocation().latitude;
-        double destinationLongitude = model.getLocation().longitude;
+    public void onNavigateClicked(Order model) {
+        double destinationLatitude = model.getDeliveryAddress().getLocation().latitude;
+        double destinationLongitude = model.getDeliveryAddress().getLocation().longitude;
 
         String url = "http://maps.google.com/maps?f=d&daddr=" + destinationLatitude + "," + destinationLongitude + "&dirflg=d&layer=t";
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url));
@@ -161,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
         routeDetails.setVisibility(View.GONE);
     }
 
-    public <T> Collection<List<T>> generatePermutationsNoRepetition(Set<T> availableNumbers) {
+    private <T> Collection<List<T>> generatePermutationsNoRepetition(Set<T> availableNumbers) {
         Collection<List<T>> permutations = new HashSet<>();
 
         for (T number : availableNumbers) {
@@ -193,11 +212,11 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
      */
     private void getAllCombinations() {
         //Measure time of optimization
-        startTime = System.currentTimeMillis();
-        for (OrderModel order : adapter.getDataset()) {
+        long startTime = System.currentTimeMillis();
+        for (Order order : adapter.getDataset()) {
             Location location = new Location(String.valueOf(order.getInvoiceNumber()));
-            location.setLatitude(order.getLocation().latitude);
-            location.setLongitude(order.getLocation().longitude);
+            location.setLatitude(order.getDeliveryAddress().getLocation().latitude);
+            location.setLongitude(order.getDeliveryAddress().getLocation().longitude);
             locations.add(location);
         }
 
@@ -212,9 +231,9 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
         }
 
         //List from adapter
-        List<OrderModel> dataset = adapter.getDataset();
+        List<Order> dataset = adapter.getDataset();
         //New lists with sorted values
-        List<OrderModel> newDataset = new ArrayList<>(dataset.size());
+        List<Order> newDataset = new ArrayList<>(dataset.size());
         for (int point : currentPoints) {
             newDataset.add(dataset.get(point));
         }
@@ -243,20 +262,22 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
     /**
      * Method calling maps directions to measure the distance and duration via routes
      *
-     * @param orderModels
+     * @param orderModels - sorted order list to get distance from it
      */
-    private void getDistanceFromPath(List<OrderModel> orderModels) {
+    private void getDistanceFromPath(List<Order> orderModels) {
         StringBuilder url = new StringBuilder();
         url.append("https://maps.googleapis.com/maps/api/directions/json?");
         url.append("origin=" + currentUserLocation.getLatitude() + "," + currentUserLocation.getLongitude());
-        url.append("&destination=" + orderModels.get(orderModels.size() - 1).getLocation().latitude + "," + orderModels.get(orderModels.size() - 1).getLocation().longitude);
+        url.append("&destination=" + orderModels.get(orderModels.size() - 1).getDeliveryAddress().getLocation().latitude
+                + "," + orderModels.get(orderModels.size() - 1).getDeliveryAddress().getLocation().longitude);
         url.append("&waypoints=");//optimize:true
         //size()-1 because last point is set as destination
         for (int i = 0; i < orderModels.size() - 1; i++) {
-            url.append("|" + orderModels.get(i).getLocation().latitude + "," + orderModels.get(i).getLocation().longitude);
+            url.append("|" + orderModels.get(i).getDeliveryAddress().getLocation().latitude + ","
+                    + orderModels.get(i).getDeliveryAddress().getLocation().longitude);
         }
         url.append("&sensor=false&units=metric&mode=driving");  //&key="+getString(R.string.google_map_key));
-        Log.i("getDistnanceFromPath " + orderModels.size(), url.toString());
+        Log.i("getDistanceFromPath " + orderModels.size(), url.toString());
         ApiHelper.getInstance().getDirections(url.toString(), new Callback<ResponseBody>() {
 
             @Override
@@ -338,7 +359,9 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
 
     }
 
-
+    /**
+     * We need user location to calculate distance and provide navigation
+     */
     public void getCurrentUserLocation() {
         Criteria myCriteria = new Criteria();
         myCriteria.setAccuracy(Criteria.ACCURACY_COARSE);
@@ -385,7 +408,6 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        //
         switch (requestCode) {
             case PERMISSION_ACCESS_COARSE_LOCATION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

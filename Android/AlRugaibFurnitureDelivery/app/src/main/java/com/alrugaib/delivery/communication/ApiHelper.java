@@ -2,6 +2,7 @@ package com.alrugaib.delivery.communication;
 
 
 import com.alrugaib.delivery.BuildConfig;
+import com.alrugaib.delivery.model.Order;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
@@ -13,7 +14,9 @@ import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
-
+/**
+ * Retrofit Api Helper, singleton that wraps requests into methods
+ */
 public class ApiHelper {
 
     private static ApiHelper instance;
@@ -22,7 +25,6 @@ public class ApiHelper {
     private static final int TIMEOUT = 10;//sec
 
     private ApiHelper() {
-
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         OkHttpClient httpClient = new OkHttpClient();
         httpClient.setReadTimeout(TIMEOUT, TimeUnit.SECONDS);
@@ -38,7 +40,7 @@ public class ApiHelper {
          * Create a service to make API requests
          */
         Retrofit builder = new Retrofit.Builder()
-                .baseUrl("http://furnituredeliverydemo.azurewebsites.net/")
+                .baseUrl("http://ashley-api.azurewebsites.net")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();
@@ -58,6 +60,8 @@ public class ApiHelper {
 
     /**
      * Singleton
+     *
+     * @return instance of ApiHelper
      */
     public static ApiHelper getInstance() {
         if (instance == null) {
@@ -66,11 +70,22 @@ public class ApiHelper {
         return instance;
     }
 
+    /**
+     * Get from API Order model from Invoice Number
+     *
+     * @param invoiceNumber - invoice number of order
+     * @param callback      callback to handle result
+     */
+    public void getOrder(String invoiceNumber, Callback<Order> callback) {
+        Call<Order> call = apiService.getOrder(invoiceNumber);
+        call.enqueue(callback);
+    }
 
     /**
      * Get Google Directions from url with waypoints
-     * @param url
-     * @param callback
+     *
+     * @param url      - url created with waypoints
+     * @param callback callback to handle result
      */
     public void getDirections(String url, Callback<ResponseBody> callback) {
         Call<ResponseBody> call = googleService.getDirections(url);
