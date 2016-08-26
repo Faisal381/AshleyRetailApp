@@ -73,9 +73,13 @@ public class LoginActivity extends Activity {
                             @Override
                             public void onResponse(Response<CustomerProfile> response, Retrofit retrofit) {
                                 Logger.logD("login", "onResponse");
-                                Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
-                                intent.putExtra(CustomerActivity.EXTRA_FROM_LOGIN, response.body());
-                                startActivity(intent);
+                                if(response.code() == 200 || response.code() == 201) {
+                                    Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
+                                    intent.putExtra(CustomerActivity.EXTRA_FROM_LOGIN, response.body());
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(LoginActivity.this, R.string.error_msg, Toast.LENGTH_SHORT).show();
+                                }
                             }
 
                             @Override
