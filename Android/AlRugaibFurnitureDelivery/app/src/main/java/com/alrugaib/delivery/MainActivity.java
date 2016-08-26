@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
             ApiHelper.getInstance().getOrder(invoiceNumber, new Callback<Order>() {
                 @Override
                 public void onResponse(Response<Order> response, Retrofit retrofit) {
-                    if (response != null && response.body() != null) {
+                    if (response.code() == 200 && response != null && response.body() != null) {
                         adapter.addElement(response.body());
                     } else {
                         Toast.makeText(MainActivity.this, getString(R.string.order_not_found)
