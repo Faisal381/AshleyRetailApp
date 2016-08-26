@@ -12,8 +12,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.alrugaibfurniture.BuildConfig;
+import com.alrugaibfurniture.FurnitureApplication;
 import com.alrugaibfurniture.R;
 import com.alrugaibfurniture.communication.ApiHelper;
+import com.alrugaibfurniture.communication.ErrorResponse;
 import com.alrugaibfurniture.model.Address;
 import com.alrugaibfurniture.model.CustomerProfile;
 import com.alrugaibfurniture.model.Order;
@@ -27,13 +29,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.okhttp.ResponseBody;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.Callback;
+import retrofit.Converter;
 import retrofit.Response;
 import retrofit.Retrofit;
 
@@ -359,11 +365,28 @@ public class CustomerActivity extends Activity {
         ApiHelper.getInstance().makeOrder(order, new Callback<Order>() {
             @Override
             public void onResponse(Response<Order> response, Retrofit retrofit) {
-                Toast.makeText(CustomerActivity.this, R.string.order_done, Toast.LENGTH_LONG).show();
-                Intent a = new Intent(CustomerActivity.this, SplashActivity.class);
-                a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(a);
-                finish();
+                if(response.code() == 400){
+                   try {
+                        ErrorResponse myError = (ErrorResponse)retrofit.responseConverter(
+                                ErrorResponse.class, ErrorResponse.class.getAnnotations())
+                                .convert(response.errorBody());
+                       Toast.makeText(CustomerActivity.this, myError.getMessage(), Toast.LENGTH_SHORT).show();
+                   } catch (IOException e) {
+                        e.printStackTrace();
+                       Toast.makeText(CustomerActivity.this, R.string.error_msg, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                else if(response.body() != null ) {
+                    Toast.makeText(CustomerActivity.this, R.string.order_done, Toast.LENGTH_LONG).show();
+                    Intent a = new Intent(CustomerActivity.this, SplashActivity.class);
+                    a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(a);
+                    finish();
+                }else{
+                    Toast.makeText(CustomerActivity.this, R.string.error_msg, Toast.LENGTH_SHORT).show();
+
+                }
             }
 
             @Override

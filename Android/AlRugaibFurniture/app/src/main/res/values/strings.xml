@@ -29,5 +29,6 @@
     <string name="first_address">First Address</string>
     <string name="second_address">Second Address</string>
     <string name="third_address">Third Address</string>
+    <string name="error_msg">Something went wrong</string>
 
 </resources>
