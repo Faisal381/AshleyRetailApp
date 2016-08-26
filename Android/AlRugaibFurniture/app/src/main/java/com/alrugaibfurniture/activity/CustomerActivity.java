@@ -324,9 +324,12 @@ public class CustomerActivity extends Activity {
             alert.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     String value = edittext.getText().toString();
-                    if (value.length() > 0) {
+
+                    Util.hideKeyboard(CustomerActivity.this);
+                    if(validateInvoiceNumber(value)) {
                         makeOrder(value);
                     }
+
                 }
             });
 
@@ -344,6 +347,23 @@ public class CustomerActivity extends Activity {
 
                     })
                     .show();
+        }
+    }
+
+    private boolean validateInvoiceNumber(String value) {
+        //invoice number has to be from 4 to 8 chars. Example AB123456
+        if(value.length() < 4) {
+            Toast.makeText(CustomerActivity.this, R.string.invoice_above_restriction, Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(value.length()>8){
+            Toast.makeText(CustomerActivity.this, R.string.invoice_below_restriction, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(Character.isLetter(value.charAt(0)) && Character.isLetter(value.charAt(1)) && Util.isNumeric(value.substring(2))){
+            return true;
+        }else{
+            Toast.makeText(CustomerActivity.this, R.string.wrong_invoice, Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 

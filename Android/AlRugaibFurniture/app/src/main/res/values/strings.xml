@@ -30,5 +30,8 @@
     <string name="second_address">Second Address</string>
     <string name="third_address">Third Address</string>
     <string name="error_msg">Something went wrong</string>
+    <string name="invoice_above_restriction">Invoice Number length has to be above 3 chars</string>
+    <string name="invoice_below_restriction">Invoice Number length has to be below 9 chars</string>
+    <string name="wrong_invoice">Wrong Invoice Number!</string>
 
 </resources>
