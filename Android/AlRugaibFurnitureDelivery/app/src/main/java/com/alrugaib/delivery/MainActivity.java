@@ -10,7 +10,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -114,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
 
                 if (splitValues != null) {
                     for (final String item : splitValues) {
-                        getOrder(item);
+                        getOrder(item.trim());
 
                     }
                 }
@@ -129,6 +128,11 @@ public class MainActivity extends AppCompatActivity implements OrderAdapter.Adap
                 adapter.updateDataset(new ArrayList<Order>());
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
     private void getOrder(final String invoiceNumber) {
